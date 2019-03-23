@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.levelup.Levels.CircleLevel;
+import com.example.levelup.Levels.HorizontalLevel;
+import com.example.levelup.Levels.VerticalLevel;
+
 // http://androidgameprogramming.com/programming-a-pong-game-part-4/
 
 class LevelView extends SurfaceView implements Runnable{
@@ -44,6 +48,7 @@ class LevelView extends SurfaceView implements Runnable{
     // Levels
     VerticalLevel verticalLevel;
     HorizontalLevel horzontalLevel;
+    CircleLevel circleLevel;
 
 /*
     When the we call new() on pongView
@@ -71,6 +76,7 @@ class LevelView extends SurfaceView implements Runnable{
 
         verticalLevel = new VerticalLevel(mScreenX, mScreenY);
         horzontalLevel = new HorizontalLevel(mScreenX, mScreenY);
+        circleLevel = new CircleLevel(mScreenX, mScreenY);
 
         setupAndRestart();
 
@@ -134,15 +140,9 @@ class LevelView extends SurfaceView implements Runnable{
             mCanvas.drawColor(Color.argb(255, 120, 197, 87));
 
             // Choose the brush color for drawing
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
-
-            // Draw the Levels
-            mCanvas.drawRect(verticalLevel.getLevel(), mPaint);
-            mCanvas.drawRect(horzontalLevel.getLevel(), mPaint);
-
+            drawLevels();
             // Draw the mBall
             //mCanvas.drawRect(mBall.getRect(), mPaint);
-
 
             // Change the drawing color to white
             mPaint.setColor(Color.argb(255, 255, 255, 255));
@@ -151,6 +151,13 @@ class LevelView extends SurfaceView implements Runnable{
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }
 
+    }
+
+    public void drawLevels(){
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        mCanvas.drawRect(verticalLevel.getLevelShape(), mPaint);
+        mCanvas.drawRect(horzontalLevel.getLevelShape(), mPaint);
+        mCanvas.drawOval(circleLevel.getLevelShape(), mPaint);
     }
 
     // If the Activity is paused/stopped
