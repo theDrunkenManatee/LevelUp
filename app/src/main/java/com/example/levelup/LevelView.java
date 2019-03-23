@@ -43,7 +43,7 @@ class LevelView extends SurfaceView implements Runnable{
 
     // Levels
     VerticalLevel verticalLevel;
-
+    HorizontalLevel horzontalLevel;
 
 /*
     When the we call new() on pongView
@@ -70,6 +70,7 @@ class LevelView extends SurfaceView implements Runnable{
         mBall = new Ball(mScreenX, mScreenY);
 
         verticalLevel = new VerticalLevel(mScreenX, mScreenY);
+        horzontalLevel = new HorizontalLevel(mScreenX, mScreenY);
 
         setupAndRestart();
 
@@ -135,8 +136,9 @@ class LevelView extends SurfaceView implements Runnable{
             // Choose the brush color for drawing
             mPaint.setColor(Color.argb(255, 255, 255, 255));
 
-            // Draw the mBat
-            mCanvas.drawRect(verticalLevel.getRect(), mPaint);
+            // Draw the Levels
+            mCanvas.drawRect(verticalLevel.getLevel(), mPaint);
+            mCanvas.drawRect(horzontalLevel.getLevel(), mPaint);
 
             // Draw the mBall
             //mCanvas.drawRect(mBall.getRect(), mPaint);

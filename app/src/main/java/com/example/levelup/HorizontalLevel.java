@@ -4,15 +4,17 @@ import android.graphics.RectF;
 
 import com.example.levelup.coordinates.LevelBackground;
 
-public class VerticalLevel implements LevelBackground {
+public class HorizontalLevel implements LevelBackground {
 
     private RectF mRect;
 
-    public VerticalLevel(int x, int y){
-        float mLength = x / 5;
-        float mHeight = y / 2;
-        float mXCoord = 4*(x/5) - 10;
-        float mYCoord = (y/5) ;
+    public HorizontalLevel(int x, int y){
+        int mScreenX = x;
+        int mScreenY = y;
+        float mLength = 4*(mScreenX / 5);
+        float mHeight = mScreenY / 8;
+        float mXCoord = (mScreenX/10);
+        float mYCoord = (10) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
     }
 
