@@ -1,4 +1,4 @@
-package com.example.levelup.Levels;
+package com.example.levelup.displayObjects;
 
 import android.graphics.RectF;
 
