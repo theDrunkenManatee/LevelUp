@@ -1,7 +1,8 @@
-package com.example.levelup.coordinates;
+package com.example.levelup.Levels;
 
 import android.graphics.RectF;
 
 public interface LevelBackground {
-    public RectF getLevel();
+    public RectF getLevelShape();
+    public float[] getLines();
 }

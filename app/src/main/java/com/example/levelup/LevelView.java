@@ -137,7 +137,7 @@ class LevelView extends SurfaceView implements Runnable{
             mCanvas = mOurHolder.lockCanvas();
 
             // Clear the screen with my favorite color
-            mCanvas.drawColor(Color.argb(255, 120, 197, 87));
+            mCanvas.drawColor(Color.LTGRAY);
 
             // Choose the brush color for drawing
             drawLevels();
@@ -154,11 +154,27 @@ class LevelView extends SurfaceView implements Runnable{
     }
 
     public void drawLevels(){
-        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        drawLevelShapes();
+        drawLevelLines();
+    }
+
+    private void drawLevelShapes() {
+        mPaint.setColor(Color.parseColor("#3C6E71"));
         mCanvas.drawRect(verticalLevel.getLevelShape(), mPaint);
         mCanvas.drawRect(horzontalLevel.getLevelShape(), mPaint);
         mCanvas.drawOval(circleLevel.getLevelShape(), mPaint);
     }
+
+    private void drawLevelLines() {
+        mPaint.setColor(Color.LTGRAY);
+        mCanvas.drawLines(verticalLevel.getLines(), mPaint);
+        mCanvas.drawLines(horzontalLevel.getLines(), mPaint);
+        mCanvas.drawLines(circleLevel.getLines(), mPaint);
+        // I can make an "inner circle" for the circle level with arcs later
+        // but that seems like more time than it's worth right now.
+    }
+
+
 
     // If the Activity is paused/stopped
 // shutdown our thread.
