@@ -1,10 +1,9 @@
-package com.example.levelup;
+package com.example.levelup.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -12,8 +11,9 @@ import com.example.levelup.displayObjects.Ball;
 import com.example.levelup.displayObjects.levels.CircleLevel;
 import com.example.levelup.displayObjects.levels.HorizontalLevel;
 import com.example.levelup.displayObjects.levels.VerticalLevel;
+import com.example.levelup.views.BottomView;
 
-public class StaticView extends SurfaceView{
+public class LevelView extends SurfaceView{
 
     Canvas mCanvas;
     // The size of the screen in pixels
@@ -26,14 +26,13 @@ public class StaticView extends SurfaceView{
     BottomView bottomView;
     Context context;
 
-    public StaticView(Context c, int x, int y) {
+    public LevelView(Context c, int x, int y) {
         super(c);
         context = c;
         mScreenX = x;
         mScreenY = y;
         mOurHolder = getHolder();
         initObjects();
-        bottomView = new BottomView(context, mScreenX, mScreenY);
     }
 
     public void initObjects(){
@@ -48,7 +47,6 @@ public class StaticView extends SurfaceView{
         mCanvas = canvas;
         setBackgroundColor();
         drawLevels();
-        bottomView.drawInitialRows(canvas);
     }
 
     public void setBackgroundColor(){

@@ -2,18 +2,18 @@ package com.example.levelup;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.levelup.displayObjects.Ball;
+import com.example.levelup.views.BottomView;
+import com.example.levelup.views.LevelView;
 
 // http://androidgameprogramming.com/programming-a-pong-game-part-4/
 
-class LevelView extends SurfaceView implements Runnable{
+class MainView extends SurfaceView implements Runnable{
 
     // This is our thread
     Thread mGameThread = null;
@@ -24,7 +24,7 @@ class LevelView extends SurfaceView implements Runnable{
     // when the game is running- or not
     // It is volatile because it is accessed from inside and outside the thread
     volatile boolean mPlaying;
-    boolean mPaused = true;
+    boolean mPaused = false;
     Canvas mCanvas;
     Paint mPaint;
     // This variable tracks the game frame rate
@@ -32,16 +32,18 @@ class LevelView extends SurfaceView implements Runnable{
     // The size of the screen in pixels
     int mScreenX, mScreenY;
     Ball mBall;
-    StaticView staticScreen;
+    LevelView levelView;
+    BottomView bottomView;
 
-    public LevelView(Context context, int x, int y) {
+    public MainView(Context context, int x, int y) {
         super(context);
         mScreenX = x;
         mScreenY = y;
         mOurHolder = getHolder();
         mPaint = new Paint();
+        levelView = new LevelView(context, x, y);
+        bottomView = new BottomView(context, mScreenX, mScreenY);
         initObjects();
-        staticScreen = new StaticView(context, x, y);
         setupAndRestart();
     }
 
@@ -75,14 +77,15 @@ class LevelView extends SurfaceView implements Runnable{
 
     public void update() {
         //mBall.update(mFPS);
+        bottomView.update(1.0, 0.0);
     }
 
     // Draw the newly updated scene
     public void draw() {
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
-            staticScreen.makeBackground(mCanvas);
-
+            levelView.makeBackground(mCanvas);
+            bottomView.drawRows(mCanvas);
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }
     }

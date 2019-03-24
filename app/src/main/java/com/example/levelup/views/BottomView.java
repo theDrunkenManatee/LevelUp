@@ -1,4 +1,4 @@
-package com.example.levelup;
+package com.example.levelup.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceView;
 
+import com.example.levelup.R;
 import com.example.levelup.displayObjects.rows.Row;
 
 public class BottomView extends SurfaceView {
@@ -25,16 +26,16 @@ public class BottomView extends SurfaceView {
         setupTextRows();
     }
 
+    public void drawRows(Canvas canvas){
+        mCanvas = canvas;
+        drawCoordinates();
+        drawButtons();
+    }
+
     public void setupPaint(){
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(40);
-    }
-
-    public void drawInitialRows(Canvas canvas){
-        mCanvas = canvas;
-        drawCoordinates();
-        drawButtons();
     }
 
     public void drawCoordinates(){
@@ -62,4 +63,12 @@ public class BottomView extends SurfaceView {
         return row;
     }
 
+    public void update(double x, double y){
+        setRowText(activeRow, String.valueOf(x), String.valueOf(y));
+    }
+
+    public void setRowText(Row row, String xText, String yText){
+        row.setText_X(xText);
+        row.setText_Y(yText);
+    }
 }
