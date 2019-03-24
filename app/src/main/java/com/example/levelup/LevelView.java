@@ -86,8 +86,6 @@ class LevelView extends SurfaceView implements Runnable{
         }
     }
 
-
-
     public void pause() {
         mPlaying = false;
         try {

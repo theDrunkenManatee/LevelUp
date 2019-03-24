@@ -16,7 +16,6 @@ import com.example.levelup.displayObjects.VerticalLevel;
 public class StaticView extends SurfaceView{
 
     Canvas mCanvas;
-    Paint mPaint;
     // The size of the screen in pixels
     int mScreenX, mScreenY;
     Ball mBall;
@@ -31,7 +30,6 @@ public class StaticView extends SurfaceView{
         mScreenX = x;
         mScreenY = y;
         mOurHolder = getHolder();
-        mPaint = new Paint();
         initObjects();
     }
 
@@ -55,25 +53,18 @@ public class StaticView extends SurfaceView{
         mCanvas.drawColor(Color.parseColor("#333232"));
     }
 
+    public Paint makePaint(int color){
+        Paint paint = new Paint();
+        paint.setColor(color);
+        return paint;
+    }
+
     public void drawLevels(){
-        drawLevelShapes();
-        drawLevelLines();
-    }
-
-    private void drawLevelShapes() {
-        mPaint.setColor(Color.parseColor("#5D737E"));
-        mCanvas.drawRect(verticalLevel.getLevelShape(), mPaint);
-        mCanvas.drawRect(horizontalLevel.getLevelShape(), mPaint);
-        mCanvas.drawOval(circleLevel.getLevelShape(), mPaint);
-    }
-
-    private void drawLevelLines() {
-        mPaint.setColor(Color.LTGRAY);
-        mCanvas.drawLines(verticalLevel.getLines(), mPaint);
-        mCanvas.drawLines(horizontalLevel.getLines(), mPaint);
-        mCanvas.drawLines(circleLevel.getLines(), mPaint);
-        // I can make an "inner circle" for the circle level with arcs later
-        // but that seems like more time than it's worth right now.
+        Paint shapePaint = makePaint(Color.parseColor("#5D737E"));
+        Paint linePaint = makePaint(Color.LTGRAY);
+        circleLevel.drawSelf(mCanvas, shapePaint, linePaint);
+        verticalLevel.drawSelf(mCanvas, shapePaint, linePaint);
+        horizontalLevel.drawSelf(mCanvas, shapePaint, linePaint);
     }
 
     private void drawButtons(){
@@ -94,9 +85,9 @@ public class StaticView extends SurfaceView{
     }
 
     private void drawCoordinateLabels(){
-        mPaint.setColor(Color.WHITE);
-        mPaint.setTextSize(40);
-        mCanvas.drawText("X", mScreenX/4, 7*mScreenY/10, mPaint);
-        mCanvas.drawText("Y", mScreenX/2, 7*mScreenY/10, mPaint);
+        Paint textPaint = makePaint(Color.WHITE);
+        textPaint.setTextSize(40);
+        mCanvas.drawText("X", mScreenX/4, 7*mScreenY/10, textPaint);
+        mCanvas.drawText("Y", mScreenX/2, 7*mScreenY/10, textPaint);
     }
 }

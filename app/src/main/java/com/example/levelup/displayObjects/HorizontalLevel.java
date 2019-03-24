@@ -1,5 +1,7 @@
 package com.example.levelup.displayObjects;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 public class HorizontalLevel implements Levels {
@@ -28,5 +30,11 @@ public class HorizontalLevel implements Levels {
     @Override
     public float[] getLines() {
         return linePoints;
+    }
+
+    @Override
+    public void drawSelf(Canvas canvas, Paint shapePaint, Paint linePaint) {
+        canvas.drawRect(getLevelShape(), shapePaint);
+        canvas.drawLines(getLines(), linePaint);
     }
 }

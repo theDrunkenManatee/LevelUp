@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LevelUp</string>
+    <string name="shapeColor">#5D737E</string>
 </resources>
