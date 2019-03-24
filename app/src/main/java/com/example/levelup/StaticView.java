@@ -9,9 +9,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.levelup.displayObjects.Ball;
-import com.example.levelup.displayObjects.CircleLevel;
-import com.example.levelup.displayObjects.HorizontalLevel;
-import com.example.levelup.displayObjects.VerticalLevel;
+import com.example.levelup.displayObjects.levels.CircleLevel;
+import com.example.levelup.displayObjects.levels.HorizontalLevel;
+import com.example.levelup.displayObjects.levels.VerticalLevel;
 
 public class StaticView extends SurfaceView{
 
@@ -23,14 +23,17 @@ public class StaticView extends SurfaceView{
     HorizontalLevel horizontalLevel;
     CircleLevel circleLevel;
     SurfaceHolder mOurHolder;
+    BottomView bottomView;
+    Context context;
 
-
-    public StaticView(Context context, int x, int y) {
-        super(context);
+    public StaticView(Context c, int x, int y) {
+        super(c);
+        context = c;
         mScreenX = x;
         mScreenY = y;
         mOurHolder = getHolder();
         initObjects();
+        bottomView = new BottomView(context, mScreenX, mScreenY);
     }
 
     public void initObjects(){
@@ -45,8 +48,7 @@ public class StaticView extends SurfaceView{
         mCanvas = canvas;
         setBackgroundColor();
         drawLevels();
-        drawButtons();
-        drawCoordinateLabels();
+        bottomView.drawInitialRows(canvas);
     }
 
     public void setBackgroundColor(){
@@ -65,29 +67,5 @@ public class StaticView extends SurfaceView{
         circleLevel.drawSelf(mCanvas, shapePaint, linePaint);
         verticalLevel.drawSelf(mCanvas, shapePaint, linePaint);
         horizontalLevel.drawSelf(mCanvas, shapePaint, linePaint);
-    }
-
-    private void drawButtons(){
-        drawCalibrateButton();
-        drawLockButton();
-    }
-
-    private void drawCalibrateButton(){
-        Drawable calibrateButton = getResources().getDrawable(R.drawable.focus, null);
-        calibrateButton.setBounds(10, 3*mScreenY/4, 60, 3*mScreenY/4 + 50);
-        calibrateButton.draw(mCanvas);
-    }
-
-    private void drawLockButton(){
-        Drawable lockButton = getResources().getDrawable(R.drawable.ic_action_name, null);
-        lockButton.setBounds(10, 3*mScreenY/4 + 90, 60, 3*mScreenY/4 + 140);
-        lockButton.draw(mCanvas);
-    }
-
-    private void drawCoordinateLabels(){
-        Paint textPaint = makePaint(Color.WHITE);
-        textPaint.setTextSize(40);
-        mCanvas.drawText("X", mScreenX/4, 7*mScreenY/10, textPaint);
-        mCanvas.drawText("Y", mScreenX/2, 7*mScreenY/10, textPaint);
     }
 }

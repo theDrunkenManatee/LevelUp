@@ -1,9 +1,10 @@
-package com.example.levelup.displayObjects;
+package com.example.levelup.displayObjects.levels;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
+
+import com.example.levelup.displayObjects.levels.Levels;
 
 public class CircleLevel implements Levels {
 

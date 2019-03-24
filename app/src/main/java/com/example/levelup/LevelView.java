@@ -82,6 +82,7 @@ class LevelView extends SurfaceView implements Runnable{
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
             staticScreen.makeBackground(mCanvas);
+
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }
     }

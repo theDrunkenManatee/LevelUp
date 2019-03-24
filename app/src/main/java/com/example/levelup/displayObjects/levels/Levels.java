@@ -1,4 +1,4 @@
-package com.example.levelup.displayObjects;
+package com.example.levelup.displayObjects.levels;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

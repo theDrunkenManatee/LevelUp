@@ -1,24 +1,26 @@
-package com.example.levelup.displayObjects;
+package com.example.levelup.displayObjects.levels;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-public class VerticalLevel implements Levels {
+import com.example.levelup.displayObjects.levels.Levels;
+
+public class HorizontalLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
 
-    public VerticalLevel(int x, int y){
-        float mLength = x / 6;
-        float mHeight = 21*y/44;
-        float mXCoord = x - mLength - 10;
-        float mYCoord = (y/8) ;
+    public HorizontalLevel(int x, int y){
+        float mLength = 21*y/44;
+        float mHeight = x/6;
+        float mXCoord = 10;
+        float mYCoord = (10) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
         linePoints = new float[]{
-                mXCoord, mYCoord + mHeight/3, mXCoord + mLength, mYCoord + mHeight/3,
-                mXCoord, mYCoord + 2*mHeight/3, mXCoord + mLength, mYCoord + 2*mHeight/3,
-                mXCoord, mYCoord + mHeight/2, mXCoord + mLength, mYCoord + mHeight/2
+                mXCoord + mLength/3, mYCoord, mXCoord + mLength/3, mYCoord + mHeight,
+                mXCoord + 2*mLength/3, mYCoord, mXCoord + 2*mLength/3, mYCoord + mHeight,
+                mXCoord + mLength/2, mYCoord, mXCoord + mLength/2, mYCoord + mHeight
         };
     }
 
@@ -28,7 +30,7 @@ public class VerticalLevel implements Levels {
     }
 
     @Override
-    public float[] getLines(){
+    public float[] getLines() {
         return linePoints;
     }
 
@@ -37,5 +39,4 @@ public class VerticalLevel implements Levels {
         canvas.drawRect(getLevelShape(), shapePaint);
         canvas.drawLines(getLines(), linePaint);
     }
-
 }
