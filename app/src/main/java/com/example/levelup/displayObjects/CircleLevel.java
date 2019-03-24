@@ -1,11 +1,8 @@
-package com.example.levelup.Levels;
+package com.example.levelup.displayObjects;
 
-import android.app.Dialog;
 import android.graphics.RectF;
 
-import java.util.zip.DeflaterInputStream;
-
-public class CircleLevel implements LevelBackground {
+public class CircleLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;

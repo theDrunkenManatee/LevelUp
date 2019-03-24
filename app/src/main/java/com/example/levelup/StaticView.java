@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -46,10 +47,12 @@ public class StaticView extends SurfaceView{
         mCanvas = canvas;
         setBackgroundColor();
         drawLevels();
+        drawButtons();
+        drawCoordinateLabels();
     }
 
     public void setBackgroundColor(){
-        mCanvas.drawColor(Color.LTGRAY);
+        mCanvas.drawColor(Color.parseColor("#333232"));
     }
 
     public void drawLevels(){
@@ -58,7 +61,7 @@ public class StaticView extends SurfaceView{
     }
 
     private void drawLevelShapes() {
-        mPaint.setColor(Color.parseColor("#3C6E71"));
+        mPaint.setColor(Color.parseColor("#5D737E"));
         mCanvas.drawRect(verticalLevel.getLevelShape(), mPaint);
         mCanvas.drawRect(horizontalLevel.getLevelShape(), mPaint);
         mCanvas.drawOval(circleLevel.getLevelShape(), mPaint);
@@ -71,5 +74,29 @@ public class StaticView extends SurfaceView{
         mCanvas.drawLines(circleLevel.getLines(), mPaint);
         // I can make an "inner circle" for the circle level with arcs later
         // but that seems like more time than it's worth right now.
+    }
+
+    private void drawButtons(){
+        drawCalibrateButton();
+        drawLockButton();
+    }
+
+    private void drawCalibrateButton(){
+        Drawable calibrateButton = getResources().getDrawable(R.drawable.focus, null);
+        calibrateButton.setBounds(10, 3*mScreenY/4, 60, 3*mScreenY/4 + 50);
+        calibrateButton.draw(mCanvas);
+    }
+
+    private void drawLockButton(){
+        Drawable lockButton = getResources().getDrawable(R.drawable.ic_action_name, null);
+        lockButton.setBounds(10, 3*mScreenY/4 + 90, 60, 3*mScreenY/4 + 140);
+        lockButton.draw(mCanvas);
+    }
+
+    private void drawCoordinateLabels(){
+        mPaint.setColor(Color.WHITE);
+        mPaint.setTextSize(40);
+        mCanvas.drawText("X", mScreenX/4, 7*mScreenY/10, mPaint);
+        mCanvas.drawText("Y", mScreenX/2, 7*mScreenY/10, mPaint);
     }
 }

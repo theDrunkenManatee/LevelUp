@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -85,9 +86,7 @@ class LevelView extends SurfaceView implements Runnable{
         }
     }
 
-    private void drawButtons(){
-        mPaint.setColor(Color.parseColor("#333232"));
-    }
+
 
     public void pause() {
         mPlaying = false;

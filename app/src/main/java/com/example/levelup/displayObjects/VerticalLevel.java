@@ -1,10 +1,8 @@
-package com.example.levelup.Levels;
+package com.example.levelup.displayObjects;
 
 import android.graphics.RectF;
 
-import com.example.levelup.Levels.LevelBackground;
-
-public class VerticalLevel implements LevelBackground {
+public class VerticalLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
