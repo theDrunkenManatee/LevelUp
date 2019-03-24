@@ -8,10 +8,10 @@ public class VerticalLevel implements Levels {
     private float[] linePoints;
 
     public VerticalLevel(int x, int y){
-        float mLength = x / 5;
-        float mHeight = y / 2;
-        float mXCoord = 4*(x/5) - 10;
-        float mYCoord = (y/5) ;
+        float mLength = x / 6;
+        float mHeight = 21*y/44;
+        float mXCoord = x - mLength - 10;
+        float mYCoord = (y/8) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
         linePoints = new float[]{
                 mXCoord, mYCoord + mHeight/3, mXCoord + mLength, mYCoord + mHeight/3,

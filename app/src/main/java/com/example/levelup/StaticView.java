@@ -39,7 +39,7 @@ public class StaticView extends SurfaceView{
         mBall = new Ball(mScreenX, mScreenY);
         verticalLevel = new VerticalLevel(mScreenX, mScreenY);
         horizontalLevel = new HorizontalLevel(mScreenX, mScreenY);
-        circleLevel = new CircleLevel(mScreenX, mScreenY);
+        circleLevel = new CircleLevel(verticalLevel.getLevelShape(), horizontalLevel.getLevelShape());
     }
 
     // Draw the newly updated scene

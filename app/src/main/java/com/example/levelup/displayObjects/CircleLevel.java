@@ -1,20 +1,19 @@
 package com.example.levelup.displayObjects;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 public class CircleLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
 
-    public CircleLevel(int x, int y){
-        float mDiameter = 3*(x / 5);
-        float mLeft = x / 10;
-        float mTop = y / 4;
-        mRect = new RectF(mLeft, mTop, mLeft + mDiameter, mTop + mDiameter);
+    public CircleLevel(RectF vLevel, RectF hLevel){
+        float mDiameter = vLevel.bottom - vLevel.top;
+        mRect = new RectF(hLevel.left, vLevel.top, hLevel.right, vLevel.bottom);
         linePoints = new float[] {
-                mLeft + mDiameter/2, mTop, mLeft + mDiameter/2, mTop + mDiameter,
-                mLeft, mTop + mDiameter/2, mLeft + mDiameter, mTop + mDiameter/2
+                hLevel.left + mDiameter/2, vLevel.top, hLevel.left + mDiameter/2, vLevel.bottom,
+                hLevel.left, vLevel.top + mDiameter/2, hLevel.right, vLevel.top + mDiameter/2
         };
     }
 

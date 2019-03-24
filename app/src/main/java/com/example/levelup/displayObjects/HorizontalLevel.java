@@ -8,9 +8,9 @@ public class HorizontalLevel implements Levels {
     private float[] linePoints;
 
     public HorizontalLevel(int x, int y){
-        float mLength = 4*(x / 5);
-        float mHeight = y / 8;
-        float mXCoord = x / 10;
+        float mLength = 21*y/44;
+        float mHeight = x/6;
+        float mXCoord = 10;
         float mYCoord = (10) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
         linePoints = new float[]{
