@@ -63,8 +63,8 @@ public class BottomView extends SurfaceView {
         return row;
     }
 
-    public void update(double x, double y){
-        setRowText(activeRow, String.valueOf(x), String.valueOf(y));
+    public void update(String x, String y){
+        setRowText(activeRow, x, y);
     }
 
     public void setRowText(Row row, String xText, String yText){
