@@ -1,9 +1,9 @@
 package com.example.levelup.dataParser;
 
 public class Vector3 {
-    private float x;
-    private float y;
-    private float z;
+    private double x;
+    private double y;
+    private double z;
 
     public Vector3(float x, float y, float z) {
         this.x = x;
@@ -11,13 +11,17 @@ public class Vector3 {
         this.z = z;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
-    public float getY() {
+    public double getY() {
         return y;
     }
-    public float getZ() {
+    public double getZ() {
         return z;
+    }
+
+    public double getVectorSum() {
+        return x + y + z;
     }
 }

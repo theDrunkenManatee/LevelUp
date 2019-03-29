@@ -7,9 +7,13 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.levelup.dataParser.DataParser;
+import com.example.levelup.dataParser.Vector3;
 import com.example.levelup.displayObjects.Ball;
 import com.example.levelup.views.BottomView;
 import com.example.levelup.views.LevelView;
+
+import java.util.Vector;
 
 // http://androidgameprogramming.com/programming-a-pong-game-part-4/
 
@@ -35,6 +39,8 @@ class MainView extends SurfaceView implements Runnable{
     LevelView levelView;
     BottomView bottomView;
 
+    DataParser parser;
+
     public MainView(Context context, int x, int y) {
         super(context);
         mScreenX = x;
@@ -43,6 +49,7 @@ class MainView extends SurfaceView implements Runnable{
         mPaint = new Paint();
         levelView = new LevelView(context, x, y);
         bottomView = new BottomView(context, mScreenX, mScreenY);
+        parser = new DataParser();
         initObjects();
         setupAndRestart();
     }
@@ -77,7 +84,7 @@ class MainView extends SurfaceView implements Runnable{
 
     public void update() {
         //mBall.update(mFPS);
-        bottomView.update(1.0, 0.0);
+        bottomView.update(parser.getShownX(), parser.getShownY());
     }
 
     // Draw the newly updated scene
@@ -90,6 +97,10 @@ class MainView extends SurfaceView implements Runnable{
         }
     }
 
+    public void handleVector(Vector3 vector) {
+        parser.parseAccelData(vector);
+    }
+
     public void pause() {
         mPlaying = false;
         try {
@@ -98,7 +109,6 @@ class MainView extends SurfaceView implements Runnable{
             Log.e("Error:", "joining thread");
         }
     }
-
     public void resume() {
         mPlaying = true;
         mGameThread = new Thread(this);

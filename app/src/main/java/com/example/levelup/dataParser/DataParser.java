@@ -1,22 +1,22 @@
 package com.example.levelup.dataParser;
 
 public class DataParser {
-    private int shownX;
-    private int shownY;
+    private double shownX = 90.5f;
+    private double shownY = 90.5f;
 
     public DataParser() {
 
     }
 
-    public void parseAccelData(float x, float y, float z) {
+    public void parseAccelData(Vector3 vector) {
 
     }
 
     //Getter Methods
-    public int getShownX() {
+    public double getShownX() {
         return shownX;
     }
-    public int getShownY() {
+    public double getShownY() {
         return shownY;
     }
 }
