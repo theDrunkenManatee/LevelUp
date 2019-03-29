@@ -10,6 +10,7 @@ public class VerticalLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
+    Paint shapePaint, linePaint;
 
     public VerticalLevel(int x, int y){
         float mLength = x / 6;
@@ -25,18 +26,28 @@ public class VerticalLevel implements Levels {
     }
 
     @Override
-    public RectF getLevelShape() {
-        return mRect;
+    public void setLinePaint(Paint paint) {
+        this.linePaint = paint;
     }
 
     @Override
-    public float[] getLines(){
+    public float[] getLines() {
         return linePoints;
     }
 
     @Override
-    public void drawSelf(Canvas canvas, Paint shapePaint, Paint linePaint) {
-        canvas.drawRect(getLevelShape(), shapePaint);
+    public RectF getShape() {
+        return mRect;
+    }
+
+    @Override
+    public void setShapePaint(Paint paint) {
+        this.shapePaint = paint;
+    }
+
+    @Override
+    public void drawSelf(Canvas canvas) {
+        canvas.drawRect(getShape(), shapePaint);
         canvas.drawLines(getLines(), linePaint);
     }
 

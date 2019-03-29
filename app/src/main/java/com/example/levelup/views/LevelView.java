@@ -39,7 +39,7 @@ public class LevelView extends SurfaceView{
         mBall = new Ball(mScreenX, mScreenY);
         verticalLevel = new VerticalLevel(mScreenX, mScreenY);
         horizontalLevel = new HorizontalLevel(mScreenX, mScreenY);
-        circleLevel = new CircleLevel(verticalLevel.getLevelShape(), horizontalLevel.getLevelShape());
+        circleLevel = new CircleLevel(verticalLevel.getShape(), horizontalLevel.getShape());
     }
 
     // Draw the newly updated scene
@@ -59,11 +59,31 @@ public class LevelView extends SurfaceView{
         return paint;
     }
 
-    public void drawLevels(){
-        Paint shapePaint = makePaint(Color.parseColor("#5D737E"));
-        Paint linePaint = makePaint(Color.LTGRAY);
-        circleLevel.drawSelf(mCanvas, shapePaint, linePaint);
-        verticalLevel.drawSelf(mCanvas, shapePaint, linePaint);
-        horizontalLevel.drawSelf(mCanvas, shapePaint, linePaint);
+    public void setLevelPaint(){
+        setShapePaint();
+        setLinePaint();
     }
+
+    private void setLinePaint() {
+        Paint linePaint = makePaint(Color.LTGRAY);
+        circleLevel.setLinePaint(linePaint);
+        verticalLevel.setLinePaint(linePaint);
+        horizontalLevel.setLinePaint(linePaint);
+    }
+
+    private void setShapePaint() {
+        Paint shapePaint = makePaint(Color.parseColor("#5D737E"));
+        circleLevel.setShapePaint(shapePaint);
+        verticalLevel.setShapePaint(shapePaint);
+        horizontalLevel.setShapePaint(shapePaint);
+    }
+
+    public void drawLevels(){
+        setLevelPaint();
+        circleLevel.drawSelf(mCanvas);
+        verticalLevel.drawSelf(mCanvas);
+        horizontalLevel.drawSelf(mCanvas);
+    }
+
+
 }

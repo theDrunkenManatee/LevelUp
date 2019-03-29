@@ -4,8 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-public interface Levels {
-    public RectF getLevelShape();
+import com.example.levelup.displayObjects.DisplayObject;
+
+public interface Levels extends DisplayObject {
+    public void setLinePaint(Paint paint);
     public float[] getLines();
-    public void drawSelf(Canvas canvas, Paint shapePaint, Paint linePaint);
 }

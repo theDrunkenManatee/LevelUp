@@ -10,6 +10,7 @@ public class HorizontalLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
+    private Paint shapePaint, linePaint;
 
     public HorizontalLevel(int x, int y){
         float mLength = 21*y/44;
@@ -24,9 +25,10 @@ public class HorizontalLevel implements Levels {
         };
     }
 
+
     @Override
-    public RectF getLevelShape() {
-        return mRect;
+    public void setLinePaint(Paint paint) {
+        this.linePaint = paint;
     }
 
     @Override
@@ -35,8 +37,18 @@ public class HorizontalLevel implements Levels {
     }
 
     @Override
-    public void drawSelf(Canvas canvas, Paint shapePaint, Paint linePaint) {
-        canvas.drawRect(getLevelShape(), shapePaint);
+    public RectF getShape() {
+        return mRect;
+    }
+
+    @Override
+    public void setShapePaint(Paint paint) {
+        this.shapePaint = paint;
+    }
+
+    @Override
+    public void drawSelf(Canvas canvas) {
+        canvas.drawRect(getShape(), shapePaint);
         canvas.drawLines(getLines(), linePaint);
     }
 }
