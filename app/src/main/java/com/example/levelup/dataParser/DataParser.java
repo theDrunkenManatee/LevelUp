@@ -9,7 +9,8 @@ public class DataParser {
     }
 
     public void parseAccelData(Vector3 vector) {
-
+        shownX = vector.getX();
+        shownY = vector.getY();
     }
 
     //Getter Methods

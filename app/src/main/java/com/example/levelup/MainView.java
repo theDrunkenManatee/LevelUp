@@ -13,8 +13,6 @@ import com.example.levelup.displayObjects.Ball;
 import com.example.levelup.views.BottomView;
 import com.example.levelup.views.LevelView;
 
-import java.util.Vector;
-
 // http://androidgameprogramming.com/programming-a-pong-game-part-4/
 
 class MainView extends SurfaceView implements Runnable{
@@ -82,11 +80,15 @@ class MainView extends SurfaceView implements Runnable{
         }
     }
 
-    public void update() {
+    private void update() {
         //mBall.update(mFPS);
-        bottomView.update(parser.getShownX(), parser.getShownY());
+        updateBottomView();
     }
-
+    private void updateBottomView() {
+        String showX = String.format("%5.2f", parser.getShownX());
+        String showY = String.format("%5.2f", parser.getShownX());
+        bottomView.update(showX,showY);
+    }
     // Draw the newly updated scene
     public void draw() {
         if (mOurHolder.getSurface().isValid()) {
