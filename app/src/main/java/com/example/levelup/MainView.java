@@ -83,14 +83,11 @@ class MainView extends SurfaceView implements Runnable{
     private void update() {
         //mBall.update(mFPS);
         updateBottomView();
+        updateLevels();
     }
-    private void updateBottomView() {
-        String showX = String.format("%5.2f", parser.getShownX());
-        String showY = String.format("%5.2f", parser.getShownX());
-        bottomView.update(showX,showY);
-    }
+
     // Draw the newly updated scene
-    public void draw() {
+    private void draw() {
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
             levelView.makeBackground(mCanvas);
@@ -99,10 +96,13 @@ class MainView extends SurfaceView implements Runnable{
         }
     }
 
+    private void onCalibrateButtonPress() {
+        parser.calibrate();
+    }
+
     public void handleVector(Vector3 vector) {
         parser.parseAccelData(vector);
     }
-
     public void pause() {
         mPlaying = false;
         try {
@@ -115,5 +115,16 @@ class MainView extends SurfaceView implements Runnable{
         mPlaying = true;
         mGameThread = new Thread(this);
         mGameThread.start();
+    }
+
+    //update() helper functions
+    private void updateBottomView() {
+        String showX = String.format("%5.2f", parser.getShownX());
+        String showY = String.format("%5.2f", parser.getShownY());
+        bottomView.update(showX, showY);
+    }
+    private void updateLevels() {
+        //TODO
+        //levels.update(parser.getHorizLevel(), parser.getVertLevel())
     }
 }
