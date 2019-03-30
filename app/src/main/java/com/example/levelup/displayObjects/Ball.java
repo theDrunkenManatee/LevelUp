@@ -12,18 +12,18 @@ public class Ball implements DisplayObject{
     private RectF mRect;
     private float mXVelocity;
     private float mYVelocity;
-    private float mDiameter;
+    private Dimensions dimensions;
     private float mRadius;
     private Paint shapePaint;
 
-    public Ball(Dimensions d){
-        mDiameter = d.getWidth() / 100;
-        mRadius = mDiameter/2;
+    public Ball(Dimensions screenSize){
+        dimensions = new Dimensions(screenSize.getWidth() / 100, screenSize.getWidth()/100);
+        mRadius = dimensions.getHeight()/2;
     /*
         Start the ball travelling straight up
         at a quarter of the screen height per second
     */
-        mYVelocity = d.getHeight() / 4;
+        mYVelocity = screenSize.getHeight() / 4;
         mXVelocity = mYVelocity;
         mRect = new RectF();
 
@@ -33,8 +33,8 @@ public class Ball implements DisplayObject{
     public void update(long fps){
         mRect.left = mRect.left + (mXVelocity / fps);
         mRect.top = mRect.top + (mYVelocity / fps);
-        mRect.right = mRect.left + mDiameter;
-        mRect.bottom = mRect.top - mDiameter;
+        mRect.right = mRect.left + dimensions.getWidth();
+        mRect.bottom = mRect.top - dimensions.getHeight();
     }
 
     // Reverse the vertical heading
@@ -60,19 +60,19 @@ public class Ball implements DisplayObject{
 
     public void clearObstacleY(float y){
         mRect.bottom = y;
-        mRect.top = y - mDiameter;
+        mRect.top = y - dimensions.getHeight();
     }
 
     public void clearObstacleX(float x){
         mRect.left = x;
-        mRect.right = x + mDiameter;
+        mRect.right = x + dimensions.getWidth();
     }
 
     public void reset(int x, int y){
         mRect.left = x / 2;
         mRect.top = y - 20;
-        mRect.right = x / 2 + mDiameter;
-        mRect.bottom = y - 20 - mDiameter;
+        mRect.right = x / 2 + dimensions.getWidth();
+        mRect.bottom = y - 20 - dimensions.getHeight();
     }
 
     public void setBallPosition(float xCenter, float yCenter){
@@ -85,6 +85,11 @@ public class Ball implements DisplayObject{
     @Override
     public RectF getShape() {
         return mRect;
+    }
+
+    @Override
+    public Dimensions getDimensions() {
+        return dimensions;
     }
 
     @Override

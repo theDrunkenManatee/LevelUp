@@ -39,7 +39,7 @@ public class LevelView extends SurfaceView{
         mBall = new Ball(dimensions);
         verticalLevel = new VerticalLevel(dimensions);
         horizontalLevel = new HorizontalLevel(dimensions);
-        circleLevel = new CircleLevel(verticalLevel.getShape(), horizontalLevel.getShape());
+        circleLevel = new CircleLevel(verticalLevel, horizontalLevel);
     }
 
     // Draw the newly updated scene

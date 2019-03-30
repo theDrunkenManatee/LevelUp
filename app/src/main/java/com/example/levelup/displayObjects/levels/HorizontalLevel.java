@@ -58,7 +58,7 @@ public class HorizontalLevel implements Levels {
 
     @Override
     public Dimensions getDimensions() {
-        return null;
+        return dimensions;
     }
 
     @Override
