@@ -5,25 +5,38 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.example.levelup.displayObjects.Dimensions;
-import com.example.levelup.displayObjects.levels.Levels;
 
 public class VerticalLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
     private Paint shapePaint, linePaint;
+    private Dimensions dimensions;
 
-    public VerticalLevel(Dimensions d){
-        int mLength = d.getWidth() / 6;
-        int mHeight = 21*d.getHeight()/44;
-        int mXCoord = d.getWidth()- mLength - 10;
-        int mYCoord = (d.getHeight()/8) ;
-        mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
+    public VerticalLevel(Dimensions screenSize){
+        setupShapeDimensions(screenSize);
+        createLevel(screenSize);
+    }
+
+    private void createLevel(Dimensions screenSize) {
+        int mXCoord = screenSize.getWidth()- dimensions.getWidth() - 10;
+        int mYCoord = (screenSize.getHeight()/8) ;
+        mRect = new RectF(mXCoord, mYCoord, mXCoord + dimensions.getWidth(),
+                mYCoord + dimensions.getHeight());
         linePoints = new float[]{
-                mXCoord, mYCoord + mHeight/3, mXCoord + mLength, mYCoord + mHeight/3,
-                mXCoord, mYCoord + 2*mHeight/3, mXCoord + mLength, mYCoord + 2*mHeight/3,
-                mXCoord, mYCoord + mHeight/2, mXCoord + mLength, mYCoord + mHeight/2
+                mXCoord, mYCoord + dimensions.getHeight()/3, mXCoord + dimensions.getWidth(),
+                mYCoord + dimensions.getHeight()/3,
+                mXCoord, mYCoord + 2*dimensions.getHeight()/3, mXCoord + dimensions.getWidth(),
+                mYCoord + 2*dimensions.getHeight()/3,
+                mXCoord, mYCoord + dimensions.getHeight()/2, mXCoord + dimensions.getWidth(),
+                mYCoord + dimensions.getHeight()/2
         };
+    }
+
+    private void setupShapeDimensions(Dimensions screenSize) {
+        int mWidth = screenSize.getWidth() / 6;
+        int mHeight = 21*screenSize.getHeight()/44;
+        dimensions = new Dimensions(mWidth, mHeight);
     }
 
     @Override
@@ -39,6 +52,11 @@ public class VerticalLevel implements Levels {
     @Override
     public RectF getShape() {
         return mRect;
+    }
+
+    @Override
+    public Dimensions getDimensions() {
+        return dimensions;
     }
 
     @Override

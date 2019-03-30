@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.levels.Levels;
 
 public class CircleLevel implements Levels {
@@ -11,13 +12,18 @@ public class CircleLevel implements Levels {
     private RectF mRect;
     private float[] linePoints;
     private Paint shapePaint, linePaint;
+    private Dimensions dimensions;
 
-    public CircleLevel(RectF vLevel, RectF hLevel){
-        float mDiameter = vLevel.bottom - vLevel.top;
-        mRect = new RectF(hLevel.left, vLevel.top, hLevel.right, vLevel.bottom);
+    public CircleLevel(VerticalLevel vLevel, HorizontalLevel hLevel){
+        dimensions = new Dimensions(hLevel.getDimensions().getWidth(),
+                vLevel.getDimensions().getHeight());
+        mRect = new RectF(hLevel.getShape().left, vLevel.getShape().top,
+                hLevel.getShape().right, vLevel.getShape().bottom);
         linePoints = new float[] {
-                hLevel.left + mDiameter/2, vLevel.top, hLevel.left + mDiameter/2, vLevel.bottom,
-                hLevel.left, vLevel.top + mDiameter/2, hLevel.right, vLevel.top + mDiameter/2
+                mRect.left + dimensions.getWidth()/2, mRect.top,
+                mRect.left + dimensions.getWidth()/2, mRect.bottom,
+                mRect.left, mRect.top + dimensions.getWidth()/2,
+                mRect.right, mRect.top + dimensions.getWidth()/2
         };
     }
 
@@ -34,6 +40,11 @@ public class CircleLevel implements Levels {
     @Override
     public RectF getShape() {
         return mRect;
+    }
+
+    @Override
+    public Dimensions getDimensions() {
+        return dimensions;
     }
 
     @Override

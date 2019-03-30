@@ -12,18 +12,32 @@ public class HorizontalLevel implements Levels {
     private RectF mRect;
     private float[] linePoints;
     private Paint shapePaint, linePaint;
+    private Dimensions dimensions;
 
-    public HorizontalLevel(Dimensions d){
-        int mLength = 21*d.getHeight()/44;
-        int mHeight = d.getWidth()/6;
+    public HorizontalLevel(Dimensions screenSize){
+        setupShapeDimensions(screenSize);
+        createLevel(screenSize);
+    }
+
+    private void createLevel(Dimensions screenSize) {
         int mXCoord = 10;
         int mYCoord = (10) ;
-        mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
+        mRect = new RectF(mXCoord, mYCoord, mXCoord + dimensions.getWidth(),
+                mYCoord + dimensions.getHeight());
         linePoints = new float[]{
-                mXCoord + mLength/3, mYCoord, mXCoord + mLength/3, mYCoord + mHeight,
-                mXCoord + 2*mLength/3, mYCoord, mXCoord + 2*mLength/3, mYCoord + mHeight,
-                mXCoord + mLength/2, mYCoord, mXCoord + mLength/2, mYCoord + mHeight
+                mXCoord + dimensions.getWidth()/3, mYCoord, mXCoord + dimensions.getWidth()/3,
+                mYCoord + dimensions.getHeight(),
+                mXCoord + 2*dimensions.getWidth()/3, mYCoord, mXCoord + 2*dimensions.getWidth()/3,
+                mYCoord + dimensions.getHeight(),
+                mXCoord + dimensions.getWidth()/2, mYCoord, mXCoord + dimensions.getWidth()/2,
+                mYCoord + dimensions.getHeight()
         };
+    }
+
+    private void setupShapeDimensions(Dimensions screenSize) {
+        int mWidth = 21*screenSize.getHeight()/44;
+        int mHeight = screenSize.getWidth()/6;
+        dimensions = new Dimensions(mWidth, mHeight);
     }
 
 
@@ -40,6 +54,11 @@ public class HorizontalLevel implements Levels {
     @Override
     public RectF getShape() {
         return mRect;
+    }
+
+    @Override
+    public Dimensions getDimensions() {
+        return null;
     }
 
     @Override
