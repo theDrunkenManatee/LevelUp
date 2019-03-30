@@ -7,21 +7,21 @@ import android.graphics.Paint;
 import android.view.SurfaceView;
 
 import com.example.levelup.R;
+import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.rows.Row;
 
 public class BottomView extends SurfaceView {
 
     Row labelRow, activeRow, lockedRow;
     Context context;
-    int mScreenX, mScreenY;
+    Dimensions dimensions;
     Paint textPaint;
     Canvas mCanvas;
 
-    public BottomView(Context c,  int screenX, int screenY) {
+    public BottomView(Context c, Dimensions d) {
         super(c);
         context = c;
-        mScreenX = screenX;
-        mScreenY = screenY;
+        dimensions = d;
         setupPaint();
         setupTextRows();
     }
@@ -50,13 +50,13 @@ public class BottomView extends SurfaceView {
     }
 
     public void setupTextRows(){
-        labelRow = rowText(27*mScreenY/40, "X", "Y");
-        activeRow = rowText(15*mScreenY/20, "0.0", "0.0");
-        lockedRow = rowText(17*mScreenY/20, "", "");
+        labelRow = rowText(27*dimensions.getHeight()/40, "X", "Y");
+        activeRow = rowText(15*dimensions.getHeight()/20, "0.0", "0.0");
+        lockedRow = rowText(17*dimensions.getHeight()/20, "", "");
     }
 
     public Row rowText(int verticalPlacement, String xText, String yText){
-        Row row = new Row(context, mScreenX, verticalPlacement);
+        Row row = new Row(context, dimensions.getWidth(), verticalPlacement);
         row.setText_Paint(textPaint);
         row.setText_X(xText);
         row.setText_Y(yText);

@@ -4,19 +4,20 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.levels.Levels;
 
 public class VerticalLevel implements Levels {
 
     private RectF mRect;
     private float[] linePoints;
-    Paint shapePaint, linePaint;
+    private Paint shapePaint, linePaint;
 
-    public VerticalLevel(int x, int y){
-        float mLength = x / 6;
-        float mHeight = 21*y/44;
-        float mXCoord = x - mLength - 10;
-        float mYCoord = (y/8) ;
+    public VerticalLevel(Dimensions d){
+        int mLength = d.getWidth() / 6;
+        int mHeight = 21*d.getHeight()/44;
+        int mXCoord = d.getWidth()- mLength - 10;
+        int mYCoord = (d.getHeight()/8) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
         linePoints = new float[]{
                 mXCoord, mYCoord + mHeight/3, mXCoord + mLength, mYCoord + mHeight/3,

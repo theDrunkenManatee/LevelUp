@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import com.example.levelup.dataParser.DataParser;
 import com.example.levelup.dataParser.Vector3;
 import com.example.levelup.displayObjects.Ball;
+import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.views.BottomView;
 import com.example.levelup.views.LevelView;
 
@@ -32,28 +33,27 @@ class MainView extends SurfaceView implements Runnable{
     // This variable tracks the game frame rate
     long mFPS;
     // The size of the screen in pixels
-    int mScreenX, mScreenY;
+    Dimensions dimensions;
     Ball mBall;
     LevelView levelView;
     BottomView bottomView;
 
     DataParser parser;
 
-    public MainView(Context context, int x, int y) {
+    public MainView(Context context, Dimensions d) {
         super(context);
-        mScreenX = x;
-        mScreenY = y;
+        dimensions = d;
         mOurHolder = getHolder();
         mPaint = new Paint();
-        levelView = new LevelView(context, x, y);
-        bottomView = new BottomView(context, mScreenX, mScreenY);
+        levelView = new LevelView(context, dimensions);
+        bottomView = new BottomView(context, dimensions);
         parser = new DataParser();
         initObjects();
         setupAndRestart();
     }
 
     public void initObjects(){
-        mBall = new Ball(mScreenX, mScreenY);
+        mBall = new Ball(dimensions);
     }
 
     public void setupAndRestart(){

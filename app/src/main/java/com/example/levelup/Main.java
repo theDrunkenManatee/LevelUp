@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.levelup.dataParser.DataParser;
 import com.example.levelup.dataParser.Vector3;
+import com.example.levelup.displayObjects.Dimensions;
 
 public class Main extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class Main extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
         // Initialize pongView and set it as the view
-        levelView = new MainView(this, size.x, size.y);
+        levelView = new MainView(this, new Dimensions(size.x, size.y));
         setContentView(levelView);
         setUpDataParsing();
     }

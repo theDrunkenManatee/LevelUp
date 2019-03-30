@@ -16,14 +16,14 @@ public class Ball implements DisplayObject{
     private float mRadius;
     private Paint shapePaint;
 
-    public Ball(int screenX, int screenY){
-        mDiameter = screenX / 100;
+    public Ball(Dimensions d){
+        mDiameter = d.getWidth() / 100;
         mRadius = mDiameter/2;
     /*
         Start the ball travelling straight up
         at a quarter of the screen height per second
     */
-        mYVelocity = screenY / 4;
+        mYVelocity = d.getHeight() / 4;
         mXVelocity = mYVelocity;
         mRect = new RectF();
 

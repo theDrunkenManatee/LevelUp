@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.levels.Levels;
 
 public class HorizontalLevel implements Levels {
@@ -12,11 +13,11 @@ public class HorizontalLevel implements Levels {
     private float[] linePoints;
     private Paint shapePaint, linePaint;
 
-    public HorizontalLevel(int x, int y){
-        float mLength = 21*y/44;
-        float mHeight = x/6;
-        float mXCoord = 10;
-        float mYCoord = (10) ;
+    public HorizontalLevel(Dimensions d){
+        int mLength = 21*d.getHeight()/44;
+        int mHeight = d.getWidth()/6;
+        int mXCoord = 10;
+        int mYCoord = (10) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
         linePoints = new float[]{
                 mXCoord + mLength/3, mYCoord, mXCoord + mLength/3, mYCoord + mHeight,

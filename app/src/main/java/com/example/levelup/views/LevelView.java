@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.levelup.displayObjects.Ball;
+import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.levels.CircleLevel;
 import com.example.levelup.displayObjects.levels.HorizontalLevel;
 import com.example.levelup.displayObjects.levels.VerticalLevel;
@@ -17,7 +18,7 @@ public class LevelView extends SurfaceView{
 
     Canvas mCanvas;
     // The size of the screen in pixels
-    int mScreenX, mScreenY;
+    Dimensions dimensions;
     Ball mBall;
     VerticalLevel verticalLevel;
     HorizontalLevel horizontalLevel;
@@ -26,19 +27,18 @@ public class LevelView extends SurfaceView{
     BottomView bottomView;
     Context context;
 
-    public LevelView(Context c, int x, int y) {
+    public LevelView(Context c, Dimensions d) {
         super(c);
         context = c;
-        mScreenX = x;
-        mScreenY = y;
+        dimensions = d;
         mOurHolder = getHolder();
         initObjects();
     }
 
     public void initObjects(){
-        mBall = new Ball(mScreenX, mScreenY);
-        verticalLevel = new VerticalLevel(mScreenX, mScreenY);
-        horizontalLevel = new HorizontalLevel(mScreenX, mScreenY);
+        mBall = new Ball(dimensions);
+        verticalLevel = new VerticalLevel(dimensions);
+        horizontalLevel = new HorizontalLevel(dimensions);
         circleLevel = new CircleLevel(verticalLevel.getShape(), horizontalLevel.getShape());
     }
 
