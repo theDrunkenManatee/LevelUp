@@ -128,8 +128,10 @@ class MainView extends SurfaceView implements Runnable{
 
     //update() helper functions
     private void updateBottomView() {
-        String showX = String.format("%5.2f", parser.getShownX());
-        String showY = String.format("%5.2f", parser.getShownY());
+        String showX = String.format("%5.2f", parser.getHorizLevel());
+        String showY = String.format("%5.2f", parser.getVertLevel());
+        //String showX = String.format("%5.2f", parser.getShownX());
+        //String showY = String.format("%5.2f", parser.getShownY());
         bottomView.update(showX, showY);
     }
     private void updateLevels() {

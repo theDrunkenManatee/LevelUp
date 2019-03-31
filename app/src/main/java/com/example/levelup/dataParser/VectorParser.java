@@ -8,8 +8,8 @@ public class VectorParser {
     private Vector3 calibrationVector = new Vector3(0,0,0);
 
     public VectorParser() {
-        maxValueX = 8;
-        maxValueY = 8;
+        maxValueX = 5;
+        maxValueY = 5;
     }
 
     public VectorParser(double maxX, double maxY) {
@@ -18,11 +18,11 @@ public class VectorParser {
     }
 
     public double getLevelX() {
-        return clampTo(vectorToParse.getX()/maxValueX, 1);
+        return Math.max(Math.min(vectorToParse.getX()/(2*maxValueX)+.5, 1),0);
     }
 
     public double getLevelY() {
-        return clampTo(vectorToParse.getY()/maxValueY, 1f);
+        return Math.max(Math.min(vectorToParse.getY()/(2*maxValueY)+.5, 1),0);
     }
 
     public void setVectorToParse(Vector3 newVector) {
@@ -33,7 +33,4 @@ public class VectorParser {
         this.calibrationVector = calibrationVector;
     }
 
-    private double clampTo(double toClamp, double minMax) {
-        return Math.min(Math.abs(toClamp), minMax) * (Math.abs(toClamp)/toClamp);
-    }
 }
