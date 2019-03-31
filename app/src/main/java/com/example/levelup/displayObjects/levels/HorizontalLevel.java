@@ -2,6 +2,7 @@ package com.example.levelup.displayObjects.levels;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 
 import com.example.levelup.displayObjects.Dimensions;
@@ -13,6 +14,7 @@ public class HorizontalLevel implements Levels {
     private float[] linePoints;
     private Paint shapePaint, linePaint;
     private Dimensions dimensions;
+    private Point center;
 
     public HorizontalLevel(Dimensions screenSize){
         setupShapeDimensions(screenSize);
@@ -24,13 +26,12 @@ public class HorizontalLevel implements Levels {
         int mYCoord = (10) ;
         mRect = new RectF(mXCoord, mYCoord, mXCoord + dimensions.getWidth(),
                 mYCoord + dimensions.getHeight());
+        center = new Point(dimensions.getWidth()/2, dimensions.getHeight()/2);
+        float thirds = dimensions.getWidth()/3;
         linePoints = new float[]{
-                mXCoord + dimensions.getWidth()/3, mYCoord, mXCoord + dimensions.getWidth()/3,
-                mYCoord + dimensions.getHeight(),
-                mXCoord + 2*dimensions.getWidth()/3, mYCoord, mXCoord + 2*dimensions.getWidth()/3,
-                mYCoord + dimensions.getHeight(),
-                mXCoord + dimensions.getWidth()/2, mYCoord, mXCoord + dimensions.getWidth()/2,
-                mYCoord + dimensions.getHeight()
+                mXCoord + thirds, mYCoord, mXCoord + thirds, mYCoord + dimensions.getHeight(),
+                mXCoord + 2*thirds, mYCoord, mXCoord + 2*thirds, mYCoord + dimensions.getHeight(),
+                mXCoord + center.x, mYCoord, mXCoord + center.x, mYCoord + dimensions.getHeight()
         };
     }
 
@@ -49,6 +50,11 @@ public class HorizontalLevel implements Levels {
     @Override
     public float[] getLines() {
         return linePoints;
+    }
+
+    @Override
+    public Point getCenter() {
+        return center;
     }
 
     @Override

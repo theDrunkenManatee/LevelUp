@@ -1,19 +1,18 @@
 package com.example.levelup.displayObjects;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import com.example.levelup.displayObjects.Ball;
 
 public class BallController {
 
     private Ball hBall, vBall, cBall;
     private Ball[] balls;
-    final static int ballColor = Color.WHITE;
-    Dimensions dimensions;
+    private final static int ballColor = Color.WHITE;
+    Dimensions screenDimensions;
 
     public BallController(Dimensions d){
-        dimensions = d;
+        screenDimensions = d;
         setupBalls();
     }
 
@@ -23,9 +22,9 @@ public class BallController {
     }
 
     private void createBalls(){
-        hBall = new Ball(dimensions);
-        vBall = new Ball(dimensions);
-        cBall = new Ball(dimensions);
+        hBall = new Ball(screenDimensions);
+        vBall = new Ball(screenDimensions);
+        cBall = new Ball(screenDimensions);
         balls = new Ball[] {hBall, vBall, cBall};
     }
 
@@ -37,7 +36,13 @@ public class BallController {
         }
     }
 
-    private void setPositions(double x, double y){
+    public void drawBalls(Canvas canvas){
+        for(Ball ball: balls){
+            ball.drawSelf(canvas);
+        }
+    }
+
+    public void setPositions(double x, double y){
 
     }
 

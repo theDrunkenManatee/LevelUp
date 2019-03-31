@@ -2,6 +2,7 @@ package com.example.levelup.displayObjects.levels;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 
 import com.example.levelup.displayObjects.Dimensions;
@@ -12,6 +13,7 @@ public class VerticalLevel implements Levels {
     private float[] linePoints;
     private Paint shapePaint, linePaint;
     private Dimensions dimensions;
+    private Point center;
 
     public VerticalLevel(Dimensions screenSize){
         setupShapeDimensions(screenSize);
@@ -21,15 +23,14 @@ public class VerticalLevel implements Levels {
     private void createLevel(Dimensions screenSize) {
         int mXCoord = screenSize.getWidth()- dimensions.getWidth() - 10;
         int mYCoord = (screenSize.getHeight()/8) ;
+        center = new Point(dimensions.getWidth()/2, dimensions.getHeight()/2);
         mRect = new RectF(mXCoord, mYCoord, mXCoord + dimensions.getWidth(),
                 mYCoord + dimensions.getHeight());
+        float thirds = dimensions.getHeight()/3;
         linePoints = new float[]{
-                mXCoord, mYCoord + dimensions.getHeight()/3, mXCoord + dimensions.getWidth(),
-                mYCoord + dimensions.getHeight()/3,
-                mXCoord, mYCoord + 2*dimensions.getHeight()/3, mXCoord + dimensions.getWidth(),
-                mYCoord + 2*dimensions.getHeight()/3,
-                mXCoord, mYCoord + dimensions.getHeight()/2, mXCoord + dimensions.getWidth(),
-                mYCoord + dimensions.getHeight()/2
+                mXCoord, mYCoord + thirds, mXCoord + dimensions.getWidth(), mYCoord + thirds,
+                mXCoord, mYCoord + 2*thirds, mXCoord + dimensions.getWidth(), mYCoord + 2*thirds,
+                mXCoord, mYCoord + center.y, mXCoord + dimensions.getWidth(), mYCoord + center.y
         };
     }
 
@@ -47,6 +48,11 @@ public class VerticalLevel implements Levels {
     @Override
     public float[] getLines() {
         return linePoints;
+    }
+
+    @Override
+    public Point getCenter() {
+        return center;
     }
 
     @Override

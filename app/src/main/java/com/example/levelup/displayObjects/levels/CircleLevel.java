@@ -2,6 +2,7 @@ package com.example.levelup.displayObjects.levels;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 
 import com.example.levelup.displayObjects.Dimensions;
@@ -13,17 +14,17 @@ public class CircleLevel implements Levels {
     private float[] linePoints;
     private Paint shapePaint, linePaint;
     private Dimensions dimensions;
+    private Point center;
 
     public CircleLevel(VerticalLevel vLevel, HorizontalLevel hLevel){
         dimensions = new Dimensions(hLevel.getDimensions().getWidth(),
                 vLevel.getDimensions().getHeight());
         mRect = new RectF(hLevel.getShape().left, vLevel.getShape().top,
                 hLevel.getShape().right, vLevel.getShape().bottom);
+        center = new Point(dimensions.getWidth()/2, dimensions.getHeight()/2);
         linePoints = new float[] {
-                mRect.left + dimensions.getWidth()/2, mRect.top,
-                mRect.left + dimensions.getWidth()/2, mRect.bottom,
-                mRect.left, mRect.top + dimensions.getWidth()/2,
-                mRect.right, mRect.top + dimensions.getWidth()/2
+                mRect.left + center.x, mRect.top,  mRect.left + center.x, mRect.bottom,
+                mRect.left, mRect.top + center.x,  mRect.right, mRect.top + center.x
         };
     }
 
@@ -35,6 +36,11 @@ public class CircleLevel implements Levels {
     @Override
     public float[] getLines() {
         return linePoints;
+    }
+
+    @Override
+    public Point getCenter() {
+        return center;
     }
 
     @Override
