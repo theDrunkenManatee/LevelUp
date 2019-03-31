@@ -19,7 +19,7 @@ public class Ball implements DisplayObject{
     private Paint shapePaint;
 
     public Ball(Dimensions screenSize){
-        dimensions = new Dimensions(screenSize.getWidth() / 100, screenSize.getWidth()/100);
+        dimensions = new Dimensions(screenSize.getWidth() / 30, screenSize.getWidth()/30);
         mRadius = dimensions.getHeight()/2;
     /*
         Start the ball travelling straight up

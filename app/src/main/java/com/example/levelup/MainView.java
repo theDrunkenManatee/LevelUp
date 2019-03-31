@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -12,6 +13,7 @@ import com.example.levelup.dataParser.DataParser;
 import com.example.levelup.dataParser.Vector3;
 import com.example.levelup.displayObjects.Ball;
 import com.example.levelup.displayObjects.Dimensions;
+import com.example.levelup.displayObjects.LevelType;
 import com.example.levelup.views.BottomView;
 import com.example.levelup.views.LevelView;
 
@@ -88,7 +90,6 @@ class MainView extends SurfaceView implements Runnable{
     }
 
     private void update() {
-        //mBall.update(mFPS);
         updateBottomView();
         updateLevels();
     }
@@ -131,8 +132,12 @@ class MainView extends SurfaceView implements Runnable{
         String showY = String.format("%5.2f", parser.getShownY());
         bottomView.update(showX, showY);
     }
+
+
     private void updateLevels() {
         //TODO
+        levelView.update(parser.getShownX(), parser.getShownY());
         //levels.update(parser.getHorizLevel(), parser.getVertLevel())
     }
+
 }

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 
+import com.example.levelup.displayObjects.levels.CircleLevel;
 import com.example.levelup.displayObjects.levels.Levels;
 
 import java.util.HashMap;
@@ -56,5 +57,9 @@ public class BallController {
         for(LevelType key: LevelType.values()){
             balls.get(key).setBallPosition(coordinates.get(key));
         }
+    }
+
+    public int getBallRadius(){
+        return balls.get(LevelType.CIRCLE).getDimensions().getHeight()/2;
     }
 }
