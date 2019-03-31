@@ -2,9 +2,11 @@ package com.example.levelup.displayObjects;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 
 import java.util.Random;
+import java.util.logging.Level;
 
 // Adapted from http://androidgameprogramming.com/programming-a-pong-game/
 

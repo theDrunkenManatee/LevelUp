@@ -16,7 +16,7 @@ public class CircleLevel implements Levels {
     private Dimensions dimensions;
     private Point center;
 
-    public CircleLevel(VerticalLevel vLevel, HorizontalLevel hLevel){
+    public CircleLevel(Levels vLevel, Levels hLevel){
         dimensions = new Dimensions(hLevel.getDimensions().getWidth(),
                 vLevel.getDimensions().getHeight());
         mRect = new RectF(hLevel.getShape().left, vLevel.getShape().top,

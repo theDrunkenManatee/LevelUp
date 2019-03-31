@@ -9,10 +9,14 @@ import android.view.SurfaceView;
 
 import com.example.levelup.displayObjects.Ball;
 import com.example.levelup.displayObjects.Dimensions;
+import com.example.levelup.displayObjects.LevelType;
 import com.example.levelup.displayObjects.levels.CircleLevel;
 import com.example.levelup.displayObjects.levels.HorizontalLevel;
+import com.example.levelup.displayObjects.levels.Levels;
 import com.example.levelup.displayObjects.levels.VerticalLevel;
 import com.example.levelup.views.BottomView;
+
+import java.util.HashMap;
 
 public class LevelView extends SurfaceView{
 
@@ -20,9 +24,7 @@ public class LevelView extends SurfaceView{
     // The size of the screen in pixels
     Dimensions dimensions;
     Ball mBall;
-    VerticalLevel verticalLevel;
-    HorizontalLevel horizontalLevel;
-    CircleLevel circleLevel;
+    HashMap<LevelType, Levels> levels;
     SurfaceHolder mOurHolder;
     BottomView bottomView;
     Context context;
@@ -37,9 +39,10 @@ public class LevelView extends SurfaceView{
 
     public void initObjects(){
         mBall = new Ball(dimensions);
-        verticalLevel = new VerticalLevel(dimensions);
-        horizontalLevel = new HorizontalLevel(dimensions);
-        circleLevel = new CircleLevel(verticalLevel, horizontalLevel);
+        levels = new HashMap<>();
+        levels.put(LevelType.VERTICAL, new VerticalLevel(dimensions));
+        levels.put(LevelType.HORIZONTAL, new HorizontalLevel(dimensions));
+        levels.put(LevelType.CIRCLE, new CircleLevel(levels.get(LevelType.VERTICAL), levels.get(LevelType.HORIZONTAL)));
     }
 
     // Draw the newly updated scene
@@ -66,23 +69,23 @@ public class LevelView extends SurfaceView{
 
     private void setLinePaint() {
         Paint linePaint = makePaint(Color.LTGRAY);
-        circleLevel.setLinePaint(linePaint);
-        verticalLevel.setLinePaint(linePaint);
-        horizontalLevel.setLinePaint(linePaint);
+        for(Levels level: levels.values()){
+            level.setLinePaint(linePaint);
+        }
     }
 
     private void setShapePaint() {
         Paint shapePaint = makePaint(Color.parseColor("#5D737E"));
-        circleLevel.setShapePaint(shapePaint);
-        verticalLevel.setShapePaint(shapePaint);
-        horizontalLevel.setShapePaint(shapePaint);
+        for(Levels level: levels.values()){
+            level.setShapePaint(shapePaint);
+        }
     }
 
     public void drawLevels(){
         setLevelPaint();
-        circleLevel.drawSelf(mCanvas);
-        verticalLevel.drawSelf(mCanvas);
-        horizontalLevel.drawSelf(mCanvas);
+        for(Levels level: levels.values()){
+            level.drawSelf(mCanvas);
+        }
     }
 
 
