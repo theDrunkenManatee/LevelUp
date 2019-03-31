@@ -77,11 +77,11 @@ public class Ball implements DisplayObject{
         mRect.bottom = y - 20 - dimensions.getHeight();
     }
 
-    public void setBallPosition(float xCenter, float yCenter){
-        mRect.left = xCenter - mRadius;
-        mRect.right = xCenter + mRadius;
-        mRect.top = yCenter + mRadius;
-        mRect.bottom = yCenter - mRadius;
+    public void setBallPosition(Point center){
+        mRect.left = center.x - mRadius;
+        mRect.right = center.x + mRadius;
+        mRect.top = center.y + mRadius;
+        mRect.bottom = center.y - mRadius;
     }
 
     @Override

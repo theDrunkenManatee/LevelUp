@@ -2,6 +2,7 @@ package com.example.levelup;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -37,23 +38,29 @@ class MainView extends SurfaceView implements Runnable{
     Ball mBall;
     LevelView levelView;
     BottomView bottomView;
+    private Context context;
 
     DataParser parser;
 
-    public MainView(Context context, Dimensions d) {
-        super(context);
+    public MainView(Context c, Dimensions d) {
+        super(c);
+        context = c;
         dimensions = d;
-        mOurHolder = getHolder();
-        mPaint = new Paint();
-        levelView = new LevelView(context, dimensions);
-        bottomView = new BottomView(context, dimensions);
-        parser = new DataParser();
         initObjects();
         setupAndRestart();
     }
 
     public void initObjects(){
-        mBall = new Ball(dimensions);
+        mOurHolder = getHolder();
+        mPaint = new Paint();
+        levelView = new LevelView(context, dimensions);
+        bottomView = new BottomView(context, dimensions);
+        parser = new DataParser();
+    }
+
+
+    public void setBackgroundColor(){
+        mCanvas.drawColor(Color.parseColor("#333232"));
     }
 
     public void setupAndRestart(){
@@ -90,7 +97,8 @@ class MainView extends SurfaceView implements Runnable{
     private void draw() {
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
-            levelView.makeBackground(mCanvas);
+            setBackgroundColor();
+            levelView.drawLevels(mCanvas);
             bottomView.drawRows(mCanvas);
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }

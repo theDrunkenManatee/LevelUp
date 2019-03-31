@@ -3,6 +3,7 @@ package com.example.levelup.displayObjects;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.Log;
 
 import com.example.levelup.displayObjects.levels.Levels;
@@ -14,11 +15,9 @@ public class BallController {
     private HashMap<LevelType, Ball> balls;
     private final static int ballColor = Color.WHITE;
     private Dimensions screenDimensions;
-    HashMap<LevelType,Levels> levels;
 
-    public BallController(Dimensions d, HashMap<LevelType,Levels> levels){
+    public BallController(Dimensions d){
         screenDimensions = d;
-        this.levels = levels;
         setupBalls();
     }
 
@@ -29,12 +28,13 @@ public class BallController {
 
     private void createBalls(){
         try {
+            balls = new HashMap<LevelType, Ball>();
             for (LevelType key: LevelType.values()){
                 balls.put(key, new Ball(screenDimensions));
             }
         }
         catch (IllegalArgumentException e){
-            Log.e("ERROR", "Null value passed as center");
+            Log.e("AAA", "Null value passed as center");
         }
     }
 
@@ -52,10 +52,9 @@ public class BallController {
         }
     }
 
-    public void setPositions(double x, double y){
+    public void setPositions(HashMap<LevelType, Point> coordinates){
         for(LevelType key: LevelType.values()){
-
+            balls.get(key).setBallPosition(coordinates.get(key));
         }
     }
-
 }

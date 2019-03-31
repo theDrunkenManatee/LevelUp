@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.view.SurfaceView;
 
 import com.example.levelup.R;
+import com.example.levelup.displayObjects.BallController;
 import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.rows.Row;
 

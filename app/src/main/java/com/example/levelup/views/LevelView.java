@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.levelup.displayObjects.Ball;
+import com.example.levelup.displayObjects.BallController;
 import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.LevelType;
 import com.example.levelup.displayObjects.levels.CircleLevel;
@@ -27,6 +28,7 @@ public class LevelView extends SurfaceView{
     HashMap<LevelType, Levels> levels;
     SurfaceHolder mOurHolder;
     BottomView bottomView;
+    BallController ballController;
     Context context;
 
     public LevelView(Context c, Dimensions d) {
@@ -38,22 +40,11 @@ public class LevelView extends SurfaceView{
     }
 
     public void initObjects(){
-        mBall = new Ball(dimensions);
+        ballController = new BallController(dimensions);
         levels = new HashMap<>();
         levels.put(LevelType.VERTICAL, new VerticalLevel(dimensions));
         levels.put(LevelType.HORIZONTAL, new HorizontalLevel(dimensions));
         levels.put(LevelType.CIRCLE, new CircleLevel(levels.get(LevelType.VERTICAL), levels.get(LevelType.HORIZONTAL)));
-    }
-
-    // Draw the newly updated scene
-    public void makeBackground(Canvas canvas) {
-        mCanvas = canvas;
-        setBackgroundColor();
-        drawLevels();
-    }
-
-    public void setBackgroundColor(){
-        mCanvas.drawColor(Color.parseColor("#333232"));
     }
 
     public Paint makePaint(int color){
@@ -81,10 +72,10 @@ public class LevelView extends SurfaceView{
         }
     }
 
-    public void drawLevels(){
+    public void drawLevels(Canvas canvas){
         setLevelPaint();
         for(Levels level: levels.values()){
-            level.drawSelf(mCanvas);
+            level.drawSelf(canvas);
         }
     }
 
