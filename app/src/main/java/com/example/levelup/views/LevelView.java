@@ -90,29 +90,52 @@ public class LevelView extends SurfaceView{
         return length - 2*ballController.getBallRadius();
     }
 
+    private float adjustStartCoordinateByBallRadius(float normalStart){
+        return normalStart - ballController.getBallRadius();
+    }
+
     private int getRelativeX(Levels level, double x){
         int adjustedWidth = adjustLengthByBallRadius(level.getDimensions().getWidth());
-        float levelStartX =  level.getShape().right - ballController.getBallRadius();
+        float levelStartX =  adjustStartCoordinateByBallRadius(level.getShape().right);
         int relativeX = (int)(levelStartX - adjustedWidth * x);
         return relativeX;
     }
 
     private int getRelativeY(Levels level, double y){
         int adjustedHeight = adjustLengthByBallRadius(level.getDimensions().getHeight());
-        float levelStartY = level.getShape().bottom - ballController.getBallRadius();
+        float levelStartY = adjustStartCoordinateByBallRadius(level.getShape().bottom);
         int relativeY = (int)(levelStartY - adjustedHeight * y);
         return relativeY;
+    }
+
+    // This is not quite working
+    private Point adjustRelativeCoordinatesCircle(Point point){
+        CircleLevel circleLevel = (CircleLevel) levels.get(LevelType.CIRCLE);
+        Point center = circleLevel.getCenter();
+        int adjustedRadius = circleLevel.getDimensions().getHeight()/2 - ballController.getBallRadius();
+        if(point.x - center.x >= adjustedRadius){
+            point.x = center.x + adjustedRadius;
+        }
+        else if (center.x - point.x >= adjustedRadius){
+            point.x = center.x - adjustedRadius;
+        }
+        if(point.y - center.y >= adjustedRadius){
+            point.y = center.y + adjustedRadius;
+        }
+        else if(center.y - point.y >= adjustedRadius){
+            point.y = center.y - adjustedRadius;
+        }
+        return point;
     }
 
     private Point getRelativeCoordinates(LevelType type, double x, double y){
         Levels level = levels.get(type);
         Point relativeCoordinates = new Point(getRelativeX(level, x), getRelativeY(level, y));
         if(type == LevelType.CIRCLE){
-
+            relativeCoordinates = adjustRelativeCoordinatesCircle(relativeCoordinates);
         }
         return relativeCoordinates;
     }
-
 
     public void update(double x, double y) {
         HashMap<LevelType, Point> coordinates = new HashMap<LevelType, Point>();
