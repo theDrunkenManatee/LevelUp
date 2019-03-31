@@ -90,16 +90,27 @@ public class LevelView extends SurfaceView{
         return length - 2*ballController.getBallRadius();
     }
 
+    private int getRelativeX(Levels level, double x){
+        int adjustedWidth = adjustLengthByBallRadius(level.getDimensions().getWidth());
+        float levelStartX =  level.getShape().right - ballController.getBallRadius();
+        int relativeX = (int)(levelStartX - adjustedWidth * x);
+        return relativeX;
+    }
+
+    private int getRelativeY(Levels level, double y){
+        int adjustedHeight = adjustLengthByBallRadius(level.getDimensions().getHeight());
+        float levelStartY = level.getShape().bottom - ballController.getBallRadius();
+        int relativeY = (int)(levelStartY - adjustedHeight * y);
+        return relativeY;
+    }
+
     private Point getRelativeCoordinates(LevelType type, double x, double y){
         Levels level = levels.get(type);
-        int adjustedWidth = adjustLengthByBallRadius(level.getDimensions().getWidth());
-        int adjustedHeight = adjustLengthByBallRadius(level.getDimensions().getHeight());
-        float levelStartX =  level.getShape().left + ballController.getBallRadius();
-        float levelStartY = level.getShape().top + ballController.getBallRadius();
-        int relativeX = (int)(adjustedWidth * x + levelStartX);
-        int relativeY = (int)(adjustedHeight * x + levelStartY);
-        Log.e("BBB", String.valueOf(adjustedHeight));
-        return new Point(relativeX, relativeY);
+        Point relativeCoordinates = new Point(getRelativeX(level, x), getRelativeY(level, y));
+        if(type == LevelType.CIRCLE){
+
+        }
+        return relativeCoordinates;
     }
 
 
