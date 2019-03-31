@@ -8,18 +8,27 @@ public class DataParser {
     private double horizLevel = 0f;
     private double vertLevel = 0f;
 
-    public DataParser() {
+    private Vector3 currentVector;
+    private VectorParser vectorParser = new VectorParser();
 
+    public DataParser() {
+        currentVector = new Vector3(0,0,0);
     }
 
-    //TODO
     public void calibrate() {
-
+        vectorParser.setCalibrationVector(currentVector);
     }
 
     public void parseAccelData(Vector3 vector) {
         shownX = vector.getX();
         shownY = vector.getY();
+        vectorParser.setVectorToParse(vector);
+        updateValues();
+    }
+
+    private void updateValues() {
+        horizLevel = vectorParser.getLevelX();
+        vertLevel = vectorParser.getLevelY();
     }
 
     //Getter Methods
