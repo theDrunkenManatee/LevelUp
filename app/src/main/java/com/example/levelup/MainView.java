@@ -133,6 +133,7 @@ class MainView extends SurfaceView implements Runnable{
         bottomView.update(showX, showY);
     }
     private void updateLevels() {
+        Log.e("BBB", String.valueOf(parser.getVertLevel()));
         levelView.update(parser.getHorizLevel(), parser.getVertLevel());
     }
 

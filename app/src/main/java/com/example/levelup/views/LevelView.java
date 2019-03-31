@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -86,7 +87,7 @@ public class LevelView extends SurfaceView{
     }
 
     private int adjustLengthByBallRadius(int length){
-        return length * 2*ballController.getBallRadius();
+        return length - 2*ballController.getBallRadius();
     }
 
     private Point getRelativeCoordinates(LevelType type, double x, double y){
@@ -97,6 +98,7 @@ public class LevelView extends SurfaceView{
         float levelStartY = level.getShape().top + ballController.getBallRadius();
         int relativeX = (int)(adjustedWidth * x + levelStartX);
         int relativeY = (int)(adjustedHeight * x + levelStartY);
+        Log.e("BBB", String.valueOf(adjustedHeight));
         return new Point(relativeX, relativeY);
     }
 
