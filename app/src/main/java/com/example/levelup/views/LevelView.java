@@ -90,20 +90,16 @@ public class LevelView extends SurfaceView{
         return length - 2*ballController.getBallRadius();
     }
 
-    private float adjustStartCoordinateByBallRadius(float normalStart){
-        return normalStart - ballController.getBallRadius();
-    }
-
     private int getRelativeX(Levels level, double x){
         int adjustedWidth = adjustLengthByBallRadius(level.getDimensions().getWidth());
-        float levelStartX =  adjustStartCoordinateByBallRadius(level.getShape().right);
-        int relativeX = (int)(levelStartX - adjustedWidth * x);
+        float levelStartX =  level.getShape().left + ballController.getBallRadius();
+        int relativeX = (int)(levelStartX + adjustedWidth * x);
         return relativeX;
     }
 
     private int getRelativeY(Levels level, double y){
         int adjustedHeight = adjustLengthByBallRadius(level.getDimensions().getHeight());
-        float levelStartY = adjustStartCoordinateByBallRadius(level.getShape().bottom);
+        float levelStartY = level.getShape().bottom - ballController.getBallRadius();
         int relativeY = (int)(levelStartY - adjustedHeight * y);
         return relativeY;
     }
