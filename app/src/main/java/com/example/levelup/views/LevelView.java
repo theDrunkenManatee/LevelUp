@@ -5,19 +5,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.levelup.displayObjects.Ball;
-import com.example.levelup.displayObjects.BallController;
+import com.example.levelup.displayObjects.balls.Ball;
+import com.example.levelup.displayObjects.balls.BallController;
 import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.LevelType;
 import com.example.levelup.displayObjects.levels.CircleLevel;
 import com.example.levelup.displayObjects.levels.HorizontalLevel;
 import com.example.levelup.displayObjects.levels.Levels;
 import com.example.levelup.displayObjects.levels.VerticalLevel;
-import com.example.levelup.views.BottomView;
 
 import java.util.HashMap;
 

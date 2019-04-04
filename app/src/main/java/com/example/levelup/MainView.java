@@ -4,22 +4,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.example.levelup.dataParser.DataParser;
 import com.example.levelup.dataParser.Vector3;
-import com.example.levelup.displayObjects.Ball;
+import com.example.levelup.displayObjects.balls.Ball;
 import com.example.levelup.displayObjects.Dimensions;
-import com.example.levelup.displayObjects.LevelType;
 import com.example.levelup.views.BottomView;
 import com.example.levelup.views.LevelView;
 
 // http://androidgameprogramming.com/programming-a-pong-game-part-4/
 
-class MainView extends SurfaceView implements Runnable{
+class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     // This is our thread
     Thread mGameThread = null;
@@ -48,6 +48,7 @@ class MainView extends SurfaceView implements Runnable{
         super(c);
         context = c;
         dimensions = d;
+        this.setOnTouchListener(this);
         initObjects();
         setupAndRestart();
     }
@@ -60,6 +61,18 @@ class MainView extends SurfaceView implements Runnable{
         parser = new DataParser();
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+        if (bottomView.isLockButtonTouched(x, y)){
+            onLockButtonPress();
+        }
+        else if(bottomView.isCalibrateButtonTouched(x, y)){
+            onCalibrateButtonPress();
+        }
+        return true;//false = finished dont loop through. true = loop through
+    }
 
     public void setBackgroundColor(){
         mCanvas.drawColor(Color.parseColor("#333232"));
@@ -107,6 +120,10 @@ class MainView extends SurfaceView implements Runnable{
 
     private void onCalibrateButtonPress() {
         parser.calibrate();
+    }
+
+    private void onLockButtonPress(){
+        bottomView.flipLock();
     }
 
     public void handleVector(Vector3 vector) {

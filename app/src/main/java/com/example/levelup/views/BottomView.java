@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceView;
 
 import com.example.levelup.R;
-import com.example.levelup.displayObjects.BallController;
 import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.rows.Row;
 
@@ -18,13 +18,16 @@ public class BottomView extends SurfaceView {
     Dimensions dimensions;
     Paint textPaint;
     Canvas mCanvas;
+    boolean locked;
 
     public BottomView(Context c, Dimensions d) {
         super(c);
         context = c;
         dimensions = d;
+        locked = false;
         setupPaint();
         setupTextRows();
+        setButtons();
     }
 
     public void drawRows(Canvas canvas){
@@ -33,30 +36,48 @@ public class BottomView extends SurfaceView {
         drawButtons();
     }
 
-    public void setupPaint(){
+    private void setupPaint(){
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(40);
     }
 
-    public void drawCoordinates(){
+    private void drawCoordinates(){
         labelRow.drawCoordinates(mCanvas);
         activeRow.drawCoordinates(mCanvas);
         lockedRow.drawCoordinates(mCanvas);
     }
 
-    public void drawButtons(){
-        lockedRow.drawButton(mCanvas, getResources().getDrawable(R.drawable.ic_action_name, null));
-        activeRow.drawButton(mCanvas, getResources().getDrawable(R.drawable.focus, null));
+    private void setButtons(){
+        setLockedButton();
+        activeRow.setButton(getResources().getDrawable(R.drawable.focus, null));
     }
 
-    public void setupTextRows(){
+    private void setLockedButton(){
+        if(locked){
+            lockedRow.setButton(getResources().getDrawable(R.drawable.ic_action_name, null));
+        }
+        else{
+            lockedRow.setButton(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp, null));
+        }
+    }
+
+    public void flipLock(){
+        locked = !locked;
+    }
+
+    private void drawButtons(){
+        lockedRow.drawButton(mCanvas);
+        activeRow.drawButton(mCanvas);
+    }
+
+    private void setupTextRows(){
         labelRow = rowText(27*dimensions.getHeight()/40, "X", "Y");
         activeRow = rowText(15*dimensions.getHeight()/20, "0.0", "0.0");
         lockedRow = rowText(17*dimensions.getHeight()/20, "", "");
     }
 
-    public Row rowText(int verticalPlacement, String xText, String yText){
+    private Row rowText(int verticalPlacement, String xText, String yText){
         Row row = new Row(context, dimensions.getWidth(), verticalPlacement);
         row.setText_Paint(textPaint);
         row.setText_X(xText);
@@ -64,11 +85,26 @@ public class BottomView extends SurfaceView {
         return row;
     }
 
+    public boolean isCalibrateButtonTouched(float x, float y){
+        return isButtonTouched(activeRow, x, y);
+    }
+
+    public boolean isLockButtonTouched(float x, float y){
+        Log.e("CCC", String.valueOf(isButtonTouched(lockedRow, x, y)));
+        return  isButtonTouched(lockedRow, x, y);
+    }
+
+    private boolean isButtonTouched(Row r, float x, float y){
+        return (x >= r.getButtonBounds().left && x <= r.getButtonBounds().right
+                && y >= r.getButtonBounds().top && y <= r.getButtonBounds().bottom);
+    }
+
     public void update(String x, String y){
+        setLockedButton();
         setRowText(activeRow, x, y);
     }
 
-    public void setRowText(Row row, String xText, String yText){
+    private void setRowText(Row row, String xText, String yText){
         row.setText_X(xText);
         row.setText_Y(yText);
     }
