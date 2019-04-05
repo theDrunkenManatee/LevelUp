@@ -30,6 +30,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     // when the game is running- or not
     // It is volatile because it is accessed from inside and outside the thread
     volatile boolean mPlaying;
+    float xTouch, yTouch;
     boolean mPaused = false;
     Canvas mCanvas;
     Paint mPaint;
@@ -63,15 +64,30 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
+        // get masked (not specific to a pointer) action
+        int maskedAction = event.getActionMasked();
+
+        switch (maskedAction) {
+            case MotionEvent.ACTION_DOWN: {
+                xTouch = event.getX();
+                yTouch = event.getY();
+                Log.e("DDD", "This worked");
+                buttonAction(xTouch, yTouch);
+            };
+            case MotionEvent.ACTION_UP: {
+            };
+        }
+        return true;//false = finished dont loop through. true = loop through
+    }
+
+    private void buttonAction(float x,float y){
         if (bottomView.isLockButtonTouched(x, y)){
+            Log.e("DDD", "This Also worked");
             onLockButtonPress();
         }
         else if(bottomView.isCalibrateButtonTouched(x, y)){
             onCalibrateButtonPress();
         }
-        return true;//false = finished dont loop through. true = loop through
     }
 
     public void setBackgroundColor(){

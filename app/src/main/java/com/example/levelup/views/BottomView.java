@@ -13,18 +13,19 @@ import com.example.levelup.displayObjects.rows.Row;
 
 public class BottomView extends SurfaceView {
 
+    // In every event handler in the top level do a try-catch(exception)
+
     Row labelRow, activeRow, lockedRow;
     Context context;
     Dimensions dimensions;
     Paint textPaint;
     Canvas mCanvas;
-    boolean locked;
+    boolean locked = false; // Do stuff before you set the variable
 
     public BottomView(Context c, Dimensions d) {
         super(c);
         context = c;
         dimensions = d;
-        locked = false;
         setupPaint();
         setupTextRows();
         setButtons();
@@ -53,9 +54,10 @@ public class BottomView extends SurfaceView {
         activeRow.setButton(getResources().getDrawable(R.drawable.focus, null));
     }
 
-    private void setLockedButton(){
+    public void setLockedButton(){
         if(locked){
             lockedRow.setButton(getResources().getDrawable(R.drawable.ic_action_name, null));
+            Log.e("DDD", String.valueOf(locked));
         }
         else{
             lockedRow.setButton(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp, null));
@@ -63,6 +65,7 @@ public class BottomView extends SurfaceView {
     }
 
     public void flipLock(){
+        Log.e("DDD", "fliped");
         locked = !locked;
     }
 

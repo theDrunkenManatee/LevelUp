@@ -126,7 +126,7 @@ public class LevelView extends SurfaceView{
         Levels level = levels.get(type);
         Point relativeCoordinates = new Point(getRelativeX(level, x), getRelativeY(level, y));
         if(type == LevelType.CIRCLE){
-            relativeCoordinates = adjustRelativeCoordinatesCircle(relativeCoordinates);
+            //relativeCoordinates = adjustRelativeCoordinatesCircle(relativeCoordinates);
         }
         return relativeCoordinates;
     }
