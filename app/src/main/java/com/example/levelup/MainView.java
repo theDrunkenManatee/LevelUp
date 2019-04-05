@@ -66,7 +66,6 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         // get masked (not specific to a pointer) action
         int maskedAction = event.getActionMasked();
-
         switch (maskedAction) {
             case MotionEvent.ACTION_DOWN: {
                 xTouch = event.getX();
@@ -140,6 +139,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     private void onLockButtonPress(){
         bottomView.flipLock();
+        bottomView.setLockedText(getText_X(), getText_Y());
     }
 
     public void handleVector(Vector3 vector) {
@@ -159,13 +159,19 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
         mGameThread.start();
     }
 
+    private String getText_X(){
+        return String.format("%5.2f", parser.getHorizLevel());
+    }
+
+    private String getText_Y(){
+        return String.format("%5.2f", parser.getVertLevel());
+    }
+
     //update() helper functions
     private void updateBottomView() {
-        String showX = String.format("%5.2f", parser.getHorizLevel());
-        String showY = String.format("%5.2f", parser.getVertLevel());
         //String showX = String.format("%5.2f", parser.getShownX());
         //String showY = String.format("%5.2f", parser.getShownY());
-        bottomView.update(showX, showY);
+        bottomView.update(getText_X(), getText_Y());
     }
     private void updateLevels() {
         Log.e("BBB", String.valueOf(parser.getVertLevel()));
