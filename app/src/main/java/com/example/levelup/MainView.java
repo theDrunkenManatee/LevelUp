@@ -136,6 +136,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     private void onCalibrateButtonPress() {
         parser.calibrate();
+
     }
 
     private void onLockButtonPress(){
@@ -172,7 +173,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     //update() helper functions
     private void updateLockedText() {
         String shownX = String.format("%5.2f", parser.getLockedX());
-        String shownY = String.format("%5.2f", parser.getLockedX());
+        String shownY = String.format("%5.2f", parser.getLockedY());
         bottomView.setLockedText(shownX, shownY);
     }
     private void updateBottomView() {
