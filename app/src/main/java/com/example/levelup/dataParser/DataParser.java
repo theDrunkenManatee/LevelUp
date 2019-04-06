@@ -3,6 +3,8 @@ package com.example.levelup.dataParser;
 public class DataParser {
     private double shownX = 90.5f;
     private double shownY = 90.5f;
+    private double lockedX = 91.5f;
+    private double lockedY = 91.5f;
 
     //level val: 0 ----> 1
     private double horizLevel = 0f;
@@ -18,6 +20,8 @@ public class DataParser {
     public void calibrate() {
         vectorParser.setCalibrationVector(currentVector);
     }
+
+    public void lockLevel() { vectorParser.setLockVector(currentVector); }
 
     public void parseAccelData(Vector3 vector) {
         shownX = vector.getX();
@@ -37,6 +41,12 @@ public class DataParser {
     }
     public double getShownY() {
         return shownY;
+    }
+    public double getLockedX() {
+        return lockedX;
+    }
+    public double getLockedY() {
+        return lockedY;
     }
     public double getHorizLevel() {
         return horizLevel;

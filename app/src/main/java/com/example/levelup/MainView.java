@@ -118,8 +118,9 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     }
 
     private void update() {
-        updateBottomView();
         updateLevels();
+        updateBottomView();
+        updateLockedText();
     }
 
     // Draw the newly updated scene
@@ -139,7 +140,8 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     private void onLockButtonPress(){
         bottomView.flipLock();
-        bottomView.setLockedText(getText_X(), getText_Y());
+        parser.lockLevel();
+
     }
 
     public void handleVector(Vector3 vector) {
@@ -168,10 +170,15 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     }
 
     //update() helper functions
+    private void updateLockedText() {
+        String shownX = String.format("%5.2f", parser.getLockedX());
+        String shownY = String.format("%5.2f", parser.getLockedX());
+        bottomView.setLockedText(shownX, shownY);
+    }
     private void updateBottomView() {
-        //String showX = String.format("%5.2f", parser.getShownX());
-        //String showY = String.format("%5.2f", parser.getShownY());
-        bottomView.update(getText_X(), getText_Y());
+        String shownX = String.format("%5.2f", parser.getShownX());
+        String shownY = String.format("%5.2f", parser.getShownY());
+        bottomView.update(shownX, shownY);
     }
     private void updateLevels() {
         Log.e("BBB", String.valueOf(parser.getVertLevel()));
