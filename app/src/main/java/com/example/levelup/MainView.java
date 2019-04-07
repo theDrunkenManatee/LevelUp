@@ -9,10 +9,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.levelup.dataParser.DataParser;
 import com.example.levelup.dataParser.Vector3;
-import com.example.levelup.displayObjects.balls.Ball;
 import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.views.BottomView;
 import com.example.levelup.views.LevelView;
@@ -21,67 +21,55 @@ import com.example.levelup.views.LevelView;
 
 class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
-    // This is our thread
-    Thread mGameThread = null;
-    // We need a SurfaceHolder object
-    // We will see it in action in the draw method soon.
-    SurfaceHolder mOurHolder;
-    // A boolean which we will set and unset
-    // when the game is running- or not
-    // It is volatile because it is accessed from inside and outside the thread
-    volatile boolean mPlaying;
-    float xTouch, yTouch;
-    boolean mPaused = false;
-    Canvas mCanvas;
-    Paint mPaint;
-    // This variable tracks the game frame rate
-    long mFPS;
-    // The size of the screen in pixels
-    Dimensions dimensions;
-    Ball mBall;
-    LevelView levelView;
-    BottomView bottomView;
+    private final static int backgroundColor = Color.parseColor("#333232");
+    private Thread mGameThread = null;
+    private SurfaceHolder mOurHolder;
+    private volatile boolean mPlaying;
+    private float xTouch, yTouch;
+    private boolean mPaused = false;
+    private Canvas mCanvas;
+    private Paint mPaint;
+    private Dimensions screenDimensions;
+    private LevelView levelView;
+    private BottomView bottomView;
     private Context context;
-
-    DataParser parser;
+    private DataParser parser;
 
     public MainView(Context c, Dimensions d) {
         super(c);
         context = c;
-        dimensions = d;
+        screenDimensions = d;
         this.setOnTouchListener(this);
         initObjects();
-        setupAndRestart();
     }
 
     public void initObjects(){
         mOurHolder = getHolder();
         mPaint = new Paint();
-        levelView = new LevelView(context, dimensions);
-        bottomView = new BottomView(context, dimensions);
+        levelView = new LevelView(context, screenDimensions);
+        bottomView = new BottomView(context, screenDimensions);
         parser = new DataParser();
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        // get masked (not specific to a pointer) action
-        int maskedAction = event.getActionMasked();
-        switch (maskedAction) {
-            case MotionEvent.ACTION_DOWN: {
-                xTouch = event.getX();
-                yTouch = event.getY();
-                Log.e("DDD", "This worked");
-                buttonAction(xTouch, yTouch);
-            };
-            case MotionEvent.ACTION_UP: {
-            };
-        }
-        return true;//false = finished dont loop through. true = loop through
+            int maskedAction = event.getActionMasked();
+            switch (maskedAction) {
+                case MotionEvent.ACTION_DOWN: {
+                    xTouch = event.getX();
+                    yTouch = event.getY();
+                    buttonAction(xTouch, yTouch);
+                }
+                ;
+                case MotionEvent.ACTION_UP: {
+                }
+                ;
+            }
+            return true;
     }
 
     private void buttonAction(float x,float y){
         if (bottomView.isLockButtonTouched(x, y)){
-            Log.e("DDD", "This Also worked");
             onLockButtonPress();
         }
         else if(bottomView.isCalibrateButtonTouched(x, y)){
@@ -90,11 +78,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     }
 
     public void setBackgroundColor(){
-        mCanvas.drawColor(Color.parseColor("#333232"));
-    }
-
-    public void setupAndRestart(){
-        //mBall.reset(mScreenX, mScreenY);
+        mCanvas.drawColor(backgroundColor);
     }
 
     @Override
@@ -105,15 +89,6 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
                 update();
             }
             draw();
-        /*
-            Calculate the FPS this frame
-            We can then use the result to
-            time animations in the update methods.
-        */
-            long timeThisFrame = System.currentTimeMillis() - startFrameTime;
-            if (timeThisFrame >= 1) {
-                mFPS = 1000 / timeThisFrame;
-            }
         }
     }
 
@@ -123,7 +98,6 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
         updateLockedText();
     }
 
-    // Draw the newly updated scene
     private void draw() {
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
@@ -141,11 +115,9 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     private void onLockButtonPress(){
         flipLocks();
-        bottomView.setLockedText(getText_X(), getText_Y());
         levelView.setLockedBalls(parser.getHorizLevel(), parser.getVertLevel());
         parser.lockLevel();
     }
-
 
     private void flipLocks(){
         bottomView.flipLock();
@@ -155,6 +127,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     public void handleVector(Vector3 vector) {
         parser.parseAccelData(vector);
     }
+
     public void pause() {
         mPlaying = false;
         try {
@@ -163,33 +136,29 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
             Log.e("Error:", "joining thread");
         }
     }
+
     public void resume() {
         mPlaying = true;
         mGameThread = new Thread(this);
         mGameThread.start();
     }
 
-    private String getText_X(){
-        return String.format("%5.2f", parser.getHorizLevel());
+    private String formatNumber(double value){
+        return String.format("%5.2f", value);
     }
 
-    private String getText_Y(){
-        return String.format("%5.2f", parser.getVertLevel());
-    }
-
-    //update() helper functions
     private void updateLockedText() {
-        String shownX = String.format("%5.2f", parser.getLockedX());
-        String shownY = String.format("%5.2f", parser.getLockedY());
+        String shownX = formatNumber(parser.getLockedX());
+        String shownY = formatNumber(parser.getLockedY());
         bottomView.setLockedText(shownX, shownY);
     }
+
     private void updateBottomView() {
-        String shownX = String.format("%5.2f", parser.getShownX());
-        String shownY = String.format("%5.2f", parser.getShownY());
+        String shownX = formatNumber(parser.getShownX());
+        String shownY = formatNumber(parser.getShownY());
         bottomView.update(shownX, shownY);
     }
     private void updateLevels() {
-        Log.e("BBB", String.valueOf(parser.getVertLevel()));
         levelView.update(parser.getHorizLevel(), parser.getVertLevel());
     }
 
