@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.SurfaceView;
 
 import com.example.levelup.R;
@@ -15,17 +14,19 @@ public class BottomView extends SurfaceView {
 
     // In every event handler in the top level do a try-catch(exception)
 
-    Row labelRow, activeRow, lockedRow;
-    Context context;
-    Dimensions dimensions;
-    Paint textPaint;
-    Canvas mCanvas;
-    boolean locked = false; // Do stuff before you set the variable
+    private static final int textSize = 40, textColor = Color.WHITE;
+
+    private Row labelRow, activeRow, lockedRow;
+    private Context context;
+    private Dimensions screenDimensions;
+    private Paint textPaint;
+    private Canvas mCanvas;
+    private boolean locked = false;
 
     public BottomView(Context c, Dimensions d) {
         super(c);
         context = c;
-        dimensions = d;
+        screenDimensions = d;
         setupPaint();
         setupTextRows();
         setButtons();
@@ -39,8 +40,8 @@ public class BottomView extends SurfaceView {
 
     private void setupPaint(){
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(40);
+        textPaint.setColor(textColor);
+        textPaint.setTextSize(textSize);
     }
 
     private void drawCoordinates(){
@@ -57,7 +58,6 @@ public class BottomView extends SurfaceView {
     public void setLockedButton(){
         if(locked){
             lockedRow.setButton(getResources().getDrawable(R.drawable.ic_action_name, null));
-            Log.e("DDD", String.valueOf(locked));
         }
         else{
             lockedRow.setButton(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp, null));
@@ -65,7 +65,6 @@ public class BottomView extends SurfaceView {
     }
 
     public void flipLock(){
-        Log.e("DDD", "fliped");
         locked = !locked;
     }
 
@@ -85,13 +84,13 @@ public class BottomView extends SurfaceView {
     }
 
     private void setupTextRows(){
-        labelRow = rowText(27*dimensions.getHeight()/40, "X", "Y");
-        activeRow = rowText(15*dimensions.getHeight()/20, "0.0", "0.0");
-        lockedRow = rowText(17*dimensions.getHeight()/20, "", "");
+        labelRow = rowText(27 * screenDimensions.getHeight() / 40, "X", "Y");
+        activeRow = rowText(15 * screenDimensions.getHeight() / 20, "0.0", "0.0");
+        lockedRow = rowText(17 * screenDimensions.getHeight() / 20, "", "");
     }
 
     private Row rowText(int verticalPlacement, String xText, String yText){
-        Row row = new Row(context, dimensions.getWidth(), verticalPlacement);
+        Row row = new Row(context, screenDimensions.getWidth(), verticalPlacement);
         row.setText_Paint(textPaint);
         row.setText_X(xText);
         row.setText_Y(yText);
@@ -103,7 +102,6 @@ public class BottomView extends SurfaceView {
     }
 
     public boolean isLockButtonTouched(float x, float y){
-        Log.e("CCC", String.valueOf(isButtonTouched(lockedRow, x, y)));
         return  isButtonTouched(lockedRow, x, y);
     }
 

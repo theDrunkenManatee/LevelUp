@@ -5,11 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.levelup.displayObjects.balls.Ball;
 import com.example.levelup.displayObjects.balls.BallController;
 import com.example.levelup.displayObjects.Dimensions;
 import com.example.levelup.displayObjects.LevelType;
@@ -19,26 +17,23 @@ import com.example.levelup.displayObjects.levels.Levels;
 import com.example.levelup.displayObjects.levels.VerticalLevel;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 public class LevelView extends SurfaceView{
 
-    Canvas mCanvas;
-    // The size of the screen in pixels
-    Dimensions dimensions;
-    Ball mBall;
-    HashMap<LevelType, Levels> levels;
-    SurfaceHolder mOurHolder;
-    BottomView bottomView;
-    BallController ballController;
-    Context context;
-    boolean locked = false;
-    BallController lockedBallController;
+    private final static int shapeColor = Color.parseColor("#5D737E"),
+            lineColor = Color.LTGRAY;
+    private Dimensions screenDimensions;
+    private HashMap<LevelType, Levels> levels;
+    private SurfaceHolder mOurHolder;
+    private BallController ballController;
+    private Context context;
+    private boolean locked = false;
+    private BallController lockedBallController;
 
     public LevelView(Context c, Dimensions d) {
         super(c);
         context = c;
-        dimensions = d;
+        screenDimensions = d;
         mOurHolder = getHolder();
         initObjects();
     }
@@ -49,16 +44,16 @@ public class LevelView extends SurfaceView{
     }
 
     private void initBallControllers(){
-        ballController = new BallController(dimensions);
+        ballController = new BallController(screenDimensions);
         ballController.setBallColor(Color.GREEN);
-        lockedBallController = new BallController(dimensions);
+        lockedBallController = new BallController(screenDimensions);
         lockedBallController.setBallColor(Color.RED);
     }
 
     private void initLevels(){
         levels = new HashMap<>();
-        levels.put(LevelType.VERTICAL, new VerticalLevel(dimensions));
-        levels.put(LevelType.HORIZONTAL, new HorizontalLevel(dimensions));
+        levels.put(LevelType.VERTICAL, new VerticalLevel(screenDimensions));
+        levels.put(LevelType.HORIZONTAL, new HorizontalLevel(screenDimensions));
         levels.put(LevelType.CIRCLE, new CircleLevel(levels.get(LevelType.VERTICAL), levels.get(LevelType.HORIZONTAL)));
     }
 
@@ -74,14 +69,14 @@ public class LevelView extends SurfaceView{
     }
 
     private void setLinePaint() {
-        Paint linePaint = makePaint(Color.LTGRAY);
+        Paint linePaint = makePaint(lineColor);
         for(Levels level: levels.values()){
             level.setLinePaint(linePaint);
         }
     }
 
     private void setShapePaint() {
-        Paint shapePaint = makePaint(Color.parseColor("#5D737E"));
+        Paint shapePaint = makePaint(shapeColor);
         for(Levels level: levels.values()){
             level.setShapePaint(shapePaint);
         }
@@ -103,45 +98,43 @@ public class LevelView extends SurfaceView{
     }
 
     private int adjustLengthByBallRadius(int length){
-        return length - 2*ballController.getBallRadius();
+        return length - 2 * ballController.getBallRadius();
     }
 
     private int getRectangleX(Levels level, double x){
         int adjustedWidth = adjustLengthByBallRadius(level.getDimensions().getWidth());
         float levelStartX =  level.getShape().left + ballController.getBallRadius();
-        int relativeX = (int)(levelStartX + adjustedWidth * x);
-        return relativeX;
+        return  (int)(levelStartX + adjustedWidth * x);
     }
 
     private int getRectangleY(Levels level, double y){
         int adjustedHeight = adjustLengthByBallRadius(level.getDimensions().getHeight());
         float levelStartY = level.getShape().bottom - ballController.getBallRadius();
-        int relativeY = (int)(levelStartY - adjustedHeight * y);
-        return relativeY;
+        return (int)(levelStartY - adjustedHeight * y);
     }
 
+    private int getAdjustedCircleRadius(){
+        return adjustLengthByBallRadius(levels.get(LevelType.CIRCLE).getDimensions().getWidth())/2;
+    }
 
     private int getAdjustedPointHelper(double distanceRatio, int center, int current){
-        return (int) ((1 - distanceRatio)*center + distanceRatio* current);
+        return (int) ((1 - distanceRatio) * center + distanceRatio * current);
     }
 
-    private Point getAdjustedPoint(double distance, Point point){
+    private Point getAdjustedCirclePoint(double distance, Point point){
         Point center = levels.get(LevelType.CIRCLE).getCenter();
-        int adjustedRadius = adjustLengthByBallRadius(levels.get(LevelType.CIRCLE).getDimensions().getWidth())/2;
+        int adjustedRadius =  getAdjustedCircleRadius();
         double distanceRatio = adjustedRadius/distance;
         int yCoord = getAdjustedPointHelper(distanceRatio, center.y, point.y);
         int xCoord = getAdjustedPointHelper(distanceRatio, center.x, point.x);
-        Log.e("FFF", String.valueOf(xCoord ));
         return new Point(xCoord, yCoord);
     }
 
-    // This is not quite working
     private Point adjustRelativeCoordinatesCircle(Point point){
-        int adjustedRadius = adjustLengthByBallRadius(levels.get(LevelType.CIRCLE).getDimensions().getWidth())/2;
-        //int adjustedRadius = levels.get(LevelType.CIRCLE).getDimensions().getHeight()/2;
+        int adjustedRadius = getAdjustedCircleRadius();
         double distanceFromCenter = getDistanceFromCenter(point);
         if(distanceFromCenter > adjustedRadius){
-            return getAdjustedPoint(distanceFromCenter, point);
+            return getAdjustedCirclePoint(distanceFromCenter, point);
         }
         return point;
     }
@@ -166,7 +159,7 @@ public class LevelView extends SurfaceView{
     }
 
     private HashMap<LevelType, Point> getBallCoordinates(double x, double y){
-        HashMap<LevelType, Point> coordinates = new HashMap<LevelType, Point>();
+        HashMap<LevelType, Point> coordinates = new HashMap<>();
         for (LevelType type: LevelType.values()){
             coordinates.put(type, getRelativeCoordinates(type, x, y));
         }
