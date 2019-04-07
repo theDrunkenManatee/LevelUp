@@ -24,8 +24,9 @@ public class DataParser {
 
     public void parseAccelData(Vector3 vector) {
         updateValues();
-        shownX = vector.getX();
-        shownY = vector.getY();
+        Vector3 calibrationVector = vectorCalculator.makeDifferenceVector(vectorParser.getVectorToParse(), vectorParser.getCalibrationVector());
+        shownX = calibrationVector.getX();
+        shownY = calibrationVector.getY();
 
         vectorParser.setVectorToParse(vector);
         currentVector = vector;
