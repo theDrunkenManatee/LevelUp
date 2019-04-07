@@ -29,14 +29,14 @@ public class VerticalLevel implements Levels {
         float thirds = dimensions.getHeight()/3;
         linePoints = new float[]{
                 mXCoord, mYCoord + thirds, mXCoord + dimensions.getWidth(), mYCoord + thirds,
-                mXCoord, mYCoord + 2*thirds, mXCoord + dimensions.getWidth(), mYCoord + 2*thirds,
+                mXCoord, mYCoord + 2 * thirds, mXCoord + dimensions.getWidth(), mYCoord + 2 * thirds,
                 mXCoord, mYCoord + center.y, mXCoord + dimensions.getWidth(), mYCoord + center.y
         };
     }
 
     private void setupShapeDimensions(Dimensions screenSize) {
         int mWidth = screenSize.getWidth() / 6;
-        int mHeight = 21*screenSize.getHeight()/44;
+        int mHeight = 21 * screenSize.getHeight() / 44;
         dimensions = new Dimensions(mWidth, mHeight);
     }
 
@@ -75,5 +75,4 @@ public class VerticalLevel implements Levels {
         canvas.drawRect(getShape(), shapePaint);
         canvas.drawLines(getLines(), linePaint);
     }
-
 }

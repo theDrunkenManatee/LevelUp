@@ -15,7 +15,6 @@ import java.util.HashMap;
 public class BallController {
 
     private HashMap<LevelType, Ball> balls;
-    private final static int ballColor = Color.WHITE;
     private Dimensions screenDimensions;
 
     public BallController(Dimensions d){
@@ -32,14 +31,9 @@ public class BallController {
     }
 
     private void createBalls(){
-        try {
-            balls = new HashMap<LevelType, Ball>();
-            for (LevelType key: LevelType.values()){
-                balls.put(key, new Ball(screenDimensions));
-            }
-        }
-        catch (IllegalArgumentException e){
-            Log.e("AAA", "Null value passed as center");
+        balls = new HashMap<>();
+        for (LevelType key: LevelType.values()) {
+            balls.put(key, new Ball(screenDimensions));
         }
     }
 

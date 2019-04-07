@@ -63,8 +63,5 @@ public class CircleLevel implements Levels {
     public void drawSelf(Canvas canvas) {
         canvas.drawOval(getShape(), shapePaint);
         canvas.drawLines(getLines(), linePaint);
-        // I can make an "inner circle" for the circle level with arcs later
-        // but that seems like more time than it's worth right now.
     }
-
 }

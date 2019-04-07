@@ -30,14 +30,14 @@ public class HorizontalLevel implements Levels {
         float thirds = dimensions.getWidth()/3;
         linePoints = new float[]{
                 mXCoord + thirds, mYCoord, mXCoord + thirds, mYCoord + dimensions.getHeight(),
-                mXCoord + 2*thirds, mYCoord, mXCoord + 2*thirds, mYCoord + dimensions.getHeight(),
+                mXCoord + 2 * thirds, mYCoord, mXCoord + 2 * thirds, mYCoord + dimensions.getHeight(),
                 mXCoord + center.x, mYCoord, mXCoord + center.x, mYCoord + dimensions.getHeight()
         };
     }
 
     private void setupShapeDimensions(Dimensions screenSize) {
-        int mWidth = 21*screenSize.getHeight()/44;
-        int mHeight = screenSize.getWidth()/6;
+        int mWidth = 21 * screenSize.getHeight() / 44;
+        int mHeight = screenSize.getWidth() / 6;
         dimensions = new Dimensions(mWidth, mHeight);
     }
 
