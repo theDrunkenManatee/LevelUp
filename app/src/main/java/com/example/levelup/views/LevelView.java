@@ -19,6 +19,7 @@ import com.example.levelup.displayObjects.levels.Levels;
 import com.example.levelup.displayObjects.levels.VerticalLevel;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class LevelView extends SurfaceView{
 
@@ -119,48 +120,36 @@ public class LevelView extends SurfaceView{
         return relativeY;
     }
 
-    private double convertToNegPosOneScale(double z){
-        //Log.e("FFF", String.valueOf(z*4 - 1));
-        return z*2 - 1;
+
+    private int getAdjustedPointHelper(double distanceRatio, int center, int current){
+        return (int) ((1 - distanceRatio)*center + distanceRatio* current);
     }
 
-    private double convertToZeroOneScale(double z){
-        return (z + 1)/2;
-    }
-
-    private double getCircleCoordinate(double x, double y){
-        double coord =  convertToZeroOneScale(convertToNegPosOneScale(x) * Math.sqrt(1 - (Math.pow(convertToNegPosOneScale(y), 2.0) / 2)));
-        Log.e("FFF", String.valueOf(coord));
-        return coord;
-    }
-
-    private int getCircleX(double x, double y){
-        float levelStartX =  levels.get(LevelType.CIRCLE).getShape().left + ballController.getBallRadius();
-        return (int)(levelStartX + getCircleCoordinate(x, y) * x);
-    }
-
-    private int getCircleY(double x, double y){
-        float levelStartX =  levels.get(LevelType.CIRCLE).getShape().bottom + ballController.getBallRadius();
-        return (int)(levelStartX + getCircleCoordinate(y, x) * y);
+    private Point getAdjustedPoint(double distance, Point point){
+        Point center = levels.get(LevelType.CIRCLE).getCenter();
+        int adjustedRadius = adjustLengthByBallRadius(levels.get(LevelType.CIRCLE).getDimensions().getWidth())/2;
+        double distanceRatio = adjustedRadius/distance;
+        int yCoord = getAdjustedPointHelper(distanceRatio, center.y, point.y);
+        int xCoord = getAdjustedPointHelper(distanceRatio, center.x, point.x);
+        Log.e("FFF", String.valueOf(xCoord ));
+        return new Point(xCoord, yCoord);
     }
 
     // This is not quite working
     private Point adjustRelativeCoordinatesCircle(Point point){
-        int adjustedRadius = levels.get(LevelType.CIRCLE).getDimensions().getHeight()/2 - ballController.getBallRadius();
+        int adjustedRadius = adjustLengthByBallRadius(levels.get(LevelType.CIRCLE).getDimensions().getWidth())/2;
+        //int adjustedRadius = levels.get(LevelType.CIRCLE).getDimensions().getHeight()/2;
         double distanceFromCenter = getDistanceFromCenter(point);
         if(distanceFromCenter > adjustedRadius){
-            getAdjustedPoint(adjustedRadius - distanceFromCenter, point);
+            return getAdjustedPoint(distanceFromCenter, point);
         }
         return point;
     }
 
-    private void getAdjustedPoint(double distance, Point point){
-
-    }
-
     private double getDistanceFromCenter(Point point){
         Point center = levels.get(LevelType.CIRCLE).getCenter();
-        return Math.sqrt((center.x - point.x)^2 + (center.y - point.y)^2);
+        double distance = Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2));
+        return distance;
     }
 
     public void setLockedBalls(double x, double y){
@@ -171,7 +160,7 @@ public class LevelView extends SurfaceView{
         Levels level = levels.get(type);
         Point relativeCoordinates = new Point(getRectangleX(level, x), getRectangleY(level, y));
         if(type == LevelType.CIRCLE){
-            relativeCoordinates = new Point(getCircleX(x, y), getCircleY(x, y));
+            relativeCoordinates = adjustRelativeCoordinatesCircle(relativeCoordinates);
         }
         return relativeCoordinates;
     }
