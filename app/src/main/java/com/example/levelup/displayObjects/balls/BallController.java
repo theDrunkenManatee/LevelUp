@@ -25,7 +25,10 @@ public class BallController {
 
     private void setupBalls() {
         createBalls();
-        colorBalls();
+    }
+
+    public void setBallColor(int color){
+        colorBalls(color);
     }
 
     private void createBalls(){
@@ -40,10 +43,10 @@ public class BallController {
         }
     }
 
-    private void colorBalls(){
+    private void colorBalls(int color) {
         Paint ballPaint = new Paint();
-        ballPaint.setColor(ballColor);
-        for(Ball ball: balls.values()){
+        ballPaint.setColor(color);
+        for (Ball ball : balls.values()) {
             ball.setShapePaint(ballPaint);
         }
     }

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -30,6 +31,8 @@ public class LevelView extends SurfaceView{
     BottomView bottomView;
     BallController ballController;
     Context context;
+    boolean locked = false;
+    BallController lockedBallController;
 
     public LevelView(Context c, Dimensions d) {
         super(c);
@@ -39,8 +42,19 @@ public class LevelView extends SurfaceView{
         initObjects();
     }
 
-    public void initObjects(){
+    private void initObjects(){
+        initBallControllers();
+        initLevels();
+    }
+
+    private void initBallControllers(){
         ballController = new BallController(dimensions);
+        ballController.setBallColor(Color.GREEN);
+        lockedBallController = new BallController(dimensions);
+        lockedBallController.setBallColor(Color.RED);
+    }
+
+    private void initLevels(){
         levels = new HashMap<>();
         levels.put(LevelType.VERTICAL, new VerticalLevel(dimensions));
         levels.put(LevelType.HORIZONTAL, new HorizontalLevel(dimensions));
@@ -75,6 +89,9 @@ public class LevelView extends SurfaceView{
     public void drawLevels(Canvas canvas){
         setLevelPaint();
         drawLevelShapes(canvas);
+        if(locked){
+            lockedBallController.drawBalls(canvas);
+        }
         ballController.drawBalls(canvas);
     }
 
@@ -88,54 +105,90 @@ public class LevelView extends SurfaceView{
         return length - 2*ballController.getBallRadius();
     }
 
-    private int getRelativeX(Levels level, double x){
+    private int getRectangleX(Levels level, double x){
         int adjustedWidth = adjustLengthByBallRadius(level.getDimensions().getWidth());
         float levelStartX =  level.getShape().left + ballController.getBallRadius();
         int relativeX = (int)(levelStartX + adjustedWidth * x);
         return relativeX;
     }
 
-    private int getRelativeY(Levels level, double y){
+    private int getRectangleY(Levels level, double y){
         int adjustedHeight = adjustLengthByBallRadius(level.getDimensions().getHeight());
         float levelStartY = level.getShape().bottom - ballController.getBallRadius();
         int relativeY = (int)(levelStartY - adjustedHeight * y);
         return relativeY;
     }
 
+    private double convertToNegPosOneScale(double z){
+        //Log.e("FFF", String.valueOf(z*4 - 1));
+        return z*2 - 1;
+    }
+
+    private double convertToZeroOneScale(double z){
+        return (z + 1)/2;
+    }
+
+    private double getCircleCoordinate(double x, double y){
+        double coord =  convertToZeroOneScale(convertToNegPosOneScale(x) * Math.sqrt(1 - (Math.pow(convertToNegPosOneScale(y), 2.0) / 2)));
+        Log.e("FFF", String.valueOf(coord));
+        return coord;
+    }
+
+    private int getCircleX(double x, double y){
+        float levelStartX =  levels.get(LevelType.CIRCLE).getShape().left + ballController.getBallRadius();
+        return (int)(levelStartX + getCircleCoordinate(x, y) * x);
+    }
+
+    private int getCircleY(double x, double y){
+        float levelStartX =  levels.get(LevelType.CIRCLE).getShape().bottom + ballController.getBallRadius();
+        return (int)(levelStartX + getCircleCoordinate(y, x) * y);
+    }
+
     // This is not quite working
     private Point adjustRelativeCoordinatesCircle(Point point){
-        CircleLevel circleLevel = (CircleLevel) levels.get(LevelType.CIRCLE);
-        Point center = circleLevel.getCenter();
-        int adjustedRadius = circleLevel.getDimensions().getHeight()/2 - ballController.getBallRadius();
-        if(point.x - center.x >= adjustedRadius){
-            point.x = center.x + adjustedRadius;
-        }
-        else if (center.x - point.x >= adjustedRadius){
-            point.x = center.x - adjustedRadius;
-        }
-        if(point.y - center.y >= adjustedRadius){
-            point.y = center.y + adjustedRadius;
-        }
-        else if(center.y - point.y >= adjustedRadius){
-            point.y = center.y - adjustedRadius;
+        int adjustedRadius = levels.get(LevelType.CIRCLE).getDimensions().getHeight()/2 - ballController.getBallRadius();
+        double distanceFromCenter = getDistanceFromCenter(point);
+        if(distanceFromCenter > adjustedRadius){
+            getAdjustedPoint(adjustedRadius - distanceFromCenter, point);
         }
         return point;
     }
 
+    private void getAdjustedPoint(double distance, Point point){
+
+    }
+
+    private double getDistanceFromCenter(Point point){
+        Point center = levels.get(LevelType.CIRCLE).getCenter();
+        return Math.sqrt((center.x - point.x)^2 + (center.y - point.y)^2);
+    }
+
+    public void setLockedBalls(double x, double y){
+        lockedBallController.setPositions(getBallCoordinates(x,y));
+    }
+
     private Point getRelativeCoordinates(LevelType type, double x, double y){
         Levels level = levels.get(type);
-        Point relativeCoordinates = new Point(getRelativeX(level, x), getRelativeY(level, y));
+        Point relativeCoordinates = new Point(getRectangleX(level, x), getRectangleY(level, y));
         if(type == LevelType.CIRCLE){
-            //relativeCoordinates = adjustRelativeCoordinatesCircle(relativeCoordinates);
+            relativeCoordinates = new Point(getCircleX(x, y), getCircleY(x, y));
         }
         return relativeCoordinates;
     }
 
-    public void update(double x, double y) {
+    private HashMap<LevelType, Point> getBallCoordinates(double x, double y){
         HashMap<LevelType, Point> coordinates = new HashMap<LevelType, Point>();
         for (LevelType type: LevelType.values()){
             coordinates.put(type, getRelativeCoordinates(type, x, y));
         }
-        ballController.setPositions(coordinates);
+        return coordinates;
+    }
+
+    public void update(double x, double y) {
+        ballController.setPositions(getBallCoordinates(x,y));
+    }
+
+    public void flipLock() {
+        locked  = !locked;
     }
 }

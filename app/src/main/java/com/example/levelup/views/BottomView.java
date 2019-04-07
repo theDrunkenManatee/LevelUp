@@ -69,12 +69,11 @@ public class BottomView extends SurfaceView {
         locked = !locked;
     }
 
-    public void setLockedText(String x, String y){
-        if(locked){
+    public void setLockedText(String x, String y) {
+        if (locked) {
             lockedRow.setText_Y(y);
             lockedRow.setText_X(x);
-        }
-        else{
+        } else {
             lockedRow.setText_Y("");
             lockedRow.setText_X("");
         }

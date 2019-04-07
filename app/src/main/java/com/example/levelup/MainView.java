@@ -138,8 +138,15 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     }
 
     private void onLockButtonPress(){
-        bottomView.flipLock();
+        flipLocks();
         bottomView.setLockedText(getText_X(), getText_Y());
+        levelView.setLockedBalls(parser.getHorizLevel(), parser.getVertLevel());
+    }
+
+
+    private void flipLocks(){
+        bottomView.flipLock();
+        levelView.flipLock();
     }
 
     public void handleVector(Vector3 vector) {
