@@ -24,10 +24,6 @@ public class DataParser {
 
     public void parseAccelData(Vector3 vector) {
         updateValues();
-        Vector3 calibrationVector = vectorCalculator.makeDifferenceVector(vectorParser.getVectorToParse(), vectorParser.getCalibrationVector());
-        shownX = calibrationVector.getX();
-        shownY = calibrationVector.getY();
-
         vectorParser.setVectorToParse(vector);
         currentVector = vector;
     }
@@ -36,18 +32,19 @@ public class DataParser {
         vectorParser.setCalibrationVector(currentVector);
     }
 
+    public void resetCalibration() {vectorParser.setCalibrationVector(new Vector3(0,0,0));}
+
     public void lockLevel() { vectorParser.setLockVector(currentVector); }
 
     private void updateValues() {
-        horizLevel = vectorCalculator.clampToMax(vectorParser.getVectorToParse().getX(), maxX);
-        vertLevel = vectorCalculator.clampToMax(vectorParser.getVectorToParse().getY(), maxY);
+        horizLevel = vectorCalculator.clampToMax(vectorParser.getCalibratedVector().getX(), maxX);
+        vertLevel = vectorCalculator.clampToMax(vectorParser.getCalibratedVector().getY(), maxY);
+        shownX = vectorParser.getCalibratedVector().getX();
+        shownY = vectorParser.getCalibratedVector().getY();
         lockedX = vectorParser.getLockVector().getX();
         lockedY = vectorParser.getLockVector().getY();
     }
 
-    private double compressToMax(double toCompress, double maxValue) {
-        return Math.max(Math.min(toCompress/(2*maxValue)+.5, 1),0);
-    }
 
     //Getter Methods
     public double getShownX() {

@@ -24,4 +24,9 @@ public class Vector3 {
     public double getVectorSum() {
         return x + y + z;
     }
+
+    @Override
+    public String toString() {
+        return x+","+y+","+z;
+    }
 }
