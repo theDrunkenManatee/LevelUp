@@ -51,8 +51,14 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
         parser = new DataParser();
     }
 
+    private void catchHelper(Exception e) {
+        Toast.makeText(context, "An error has occurred",
+                Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        try {
             int maskedAction = event.getActionMasked();
             switch (maskedAction) {
                 case MotionEvent.ACTION_DOWN: {
@@ -66,6 +72,10 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
                 ;
             }
             return true;
+        }catch (Exception e){
+            catchHelper(e);
+            return false;
+        }
     }
 
     private void buttonAction(float x,float y){
@@ -83,19 +93,24 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     @Override
     public void run() {
-        while (mPlaying) {
-            long startFrameTime = System.currentTimeMillis();
-            if(!mPaused){
-                update();
+        try {
+            while (mPlaying) {
+                long startFrameTime = System.currentTimeMillis();
+                if (!mPaused) {
+                    update();
+                }
+                draw();
             }
-            draw();
+        }
+        catch (Exception e){
+            catchHelper(e);
+            throw e;
         }
     }
 
     private void update() {
         updateLevels();
         updateBottomView();
-        updateLockedText();
     }
 
     private void draw() {
@@ -110,11 +125,11 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     private void onCalibrateButtonPress() {
         parser.calibrate();
-
     }
 
     private void onLockButtonPress(){
         flipLocks();
+        updateLockedText();
         levelView.setLockedBalls(parser.getHorizLevel(), parser.getVertLevel());
         parser.lockLevel();
     }
@@ -133,7 +148,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
         try {
             mGameThread.join();
         } catch (InterruptedException e) {
-            Log.e("Error:", "joining thread");
+            catchHelper(e);
         }
     }
 
@@ -148,8 +163,8 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
     }
 
     private void updateLockedText() {
-        String shownX = formatNumber(parser.getLockedX());
-        String shownY = formatNumber(parser.getLockedY());
+        String shownX = formatNumber(parser.getShownX());
+        String shownY = formatNumber(parser.getShownY());
         bottomView.setLockedText(shownX, shownY);
     }
 
