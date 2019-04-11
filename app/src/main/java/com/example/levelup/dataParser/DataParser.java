@@ -16,6 +16,8 @@ public class DataParser {
 
     private VectorParser vectorParser = new VectorParser();
     private VectorCalculator vectorCalculator = new VectorCalculator();
+    private DataSmoother xSmoother = new DataSmoother(10);
+    private DataSmoother ySmoother = new DataSmoother(10);
 
     public DataParser() {
         currentVector = new Vector3(0,0,0);
@@ -23,6 +25,7 @@ public class DataParser {
 
 
     public void parseAccelData(Vector3 vector) {
+        updateSmoother();
         updateValues();
         vectorParser.setVectorToParse(vector);
         currentVector = vector;
@@ -36,11 +39,16 @@ public class DataParser {
 
     public void lockLevel() { vectorParser.setLockVector(currentVector); }
 
+    private void updateSmoother() {
+        xSmoother.addData(vectorParser.getCalibratedVector().getX());
+        ySmoother.addData(vectorParser.getCalibratedVector().getY());
+    }
+
     private void updateValues() {
-        horizLevel = vectorCalculator.clampToMax(vectorParser.getCalibratedVector().getX(), maxX);
-        vertLevel = vectorCalculator.clampToMax(vectorParser.getCalibratedVector().getY(), maxY);
-        shownX = vectorParser.getCalibratedVector().getX();
-        shownY = vectorParser.getCalibratedVector().getY();
+        horizLevel = vectorCalculator.clampToMax(xSmoother.getAverage(), maxX);
+        vertLevel = vectorCalculator.clampToMax(ySmoother.getAverage(), maxY);
+        shownX = xSmoother.getAverage();
+        shownY = ySmoother.getAverage();
         lockedX = vectorParser.getLockVector().getX();
         lockedY = vectorParser.getLockVector().getY();
     }
