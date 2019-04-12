@@ -26,4 +26,8 @@ public class DataSmoother {
         return sum/valueDeque.size();
     }
 
+    public void clearMemory() {
+        valueDeque.clear();
+    }
+
 }
