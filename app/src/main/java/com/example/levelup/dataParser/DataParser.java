@@ -62,8 +62,8 @@ public class DataParser {
         shownX = 2*horizLevel-1;
         shownY = 2*vertLevel-1;
 
-        lockedX = vectorParser.getLockVector().getX();
-        lockedY = vectorParser.getLockVector().getY();
+        lockedX = vectorCalculator.clampToMax(vectorParser.getLockVector().getX(), maxX);
+        lockedY = vectorCalculator.clampToMax(vectorParser.getLockVector().getY(), maxY);
     }
 
 
