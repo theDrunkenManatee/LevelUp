@@ -126,6 +126,8 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
 
     private void onCalibrateButtonPress() {
         parser.calibrate();
+        flipLocks();
+        bottomView.setLockedText("", "");
     }
 
     private void onLockButtonPress(){
