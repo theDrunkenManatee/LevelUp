@@ -24,8 +24,8 @@ public class CircleLevel implements Levels {
         center = new Point((int) hLevel.getShape().left + (dimensions.getWidth() / 2),
                 (int) vLevel.getShape().top + (dimensions.getHeight() / 2));
         linePoints = new float[] {
-                mRect.left + center.x, mRect.top,  mRect.left + center.x, mRect.bottom,
-                mRect.left, mRect.top + center.x,  mRect.right, mRect.top + center.x
+                mRect.left + hLevel.getCenter().x, mRect.top,  mRect.left +  hLevel.getCenter().x, mRect.bottom,
+                mRect.left, mRect.top + vLevel.getCenter().y,  mRect.right, mRect.top +  vLevel.getCenter().y
         };
     }
 

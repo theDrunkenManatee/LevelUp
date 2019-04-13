@@ -51,6 +51,7 @@ class MainView extends SurfaceView implements Runnable, View.OnTouchListener {
         parser = new DataParser();
     }
 
+    //put name of the exception in here.
     private void catchHelper(Exception e) {
         Toast.makeText(context, "An error has occurred",
                 Toast.LENGTH_LONG).show();
