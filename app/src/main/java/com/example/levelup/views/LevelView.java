@@ -173,4 +173,8 @@ public class LevelView extends SurfaceView{
     public void flipLock() {
         locked  = !locked;
     }
+
+    public void turnOffLock() {
+        locked = false;
+    }
 }

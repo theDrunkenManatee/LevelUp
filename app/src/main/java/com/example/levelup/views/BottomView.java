@@ -119,4 +119,8 @@ public class BottomView extends SurfaceView {
         row.setText_X(xText);
         row.setText_Y(yText);
     }
+
+    public void turnOffLock() {
+        locked = false;
+    }
 }
